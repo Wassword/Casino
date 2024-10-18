@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Blackjack Game</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Blackjack Game</h1>
+
+<div>
+    <h2>Dealer's Hand</h2>
+    <ul>
+        <li th:each="card : ${dealerHand}" th:text="${card}"></li>
+    </ul>
+</div>
+
+<div>
+    <h2>Your Hand</h2>
+    <ul>
+        <li th:each="card : ${playerHand}" th:text="${card}"></li>
+    </ul>
+    <p>Total: <span th:text="${playerTotal}"></span></p>
+</div>
+
+<div>
+    <form method="post" action="/game/hit">
+        <button type="submit">Hit</button>
+    </form>
+    <form method="post" action="/game/stand">
+        <button type="submit">Stand</button>
+    </form>
+</div>
+
+<p th:if="${gameResult != null}" th:text="${gameResult}"></p>
+
+<div>
+    <a href="/game" class="btn btn-primary">New Game</a>
+</div>
+</body>
+</html>

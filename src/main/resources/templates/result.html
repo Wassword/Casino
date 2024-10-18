@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Game Result</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Game Over</h1>
+
+<p th:text="${resultMessage}"></p>
+
+<h2>Final Hands:</h2>
+<div>
+    <h3>Dealer's Hand</h3>
+    <ul>
+        <li th:each="card : ${dealerHand}" th:text="${card}"></li>
+    </ul>
+</div>
+
+<div>
+    <h3>Your Hand</h3>
+    <ul>
+        <li th:each="card : ${playerHand}" th:text="${card}"></li>
+    </ul>
+    <p>Total: <span th:text="${playerTotal}"></span></p>
+</div>
+
+<div>
+    <a href="/game" class="btn btn-primary">Play Again</a>
+</div>
+</body>
+</html>
