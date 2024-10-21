@@ -1,31 +1,33 @@
 package org.casino.service;
 
-import lombok.Getter;
 import org.casino.models.Dealer;
 import org.casino.models.Deck;
 import org.casino.models.Player;
 
 public class Game {
-    private final Player player;
-    private final Dealer dealer;
-    private final Deck deck;
-    // Check if the game is over
-    @Getter
+    private Player player;
+    private Dealer dealer;
+    private Deck deck;
     private boolean gameOver;
+    // Check if the game is over
 
     // Constructor to initialize the game
-    public Game(int initialPlayerBalance) {
+    public boolean Game(int initialPlayerBalance) {
         this.deck = new Deck();
         this.player = new Player(initialPlayerBalance);
         this.dealer = new Dealer();
         this.gameOver = false;
 
-        // Deal initial cards to both player and dealer
-        player.addCardToHand(deck.dealCard());
-        player.addCardToHand(deck.dealCard());
+        boolean isGameOver; {
+            return gameOver;
+        }
 
-        dealer.addCardToHand(deck.dealCard());
-        dealer.addCardToHand(deck.dealCard());
+    }
+
+    public Game(Player player, Dealer dealer, Deck deck) {
+        this.player = player;
+        this.dealer = dealer;
+        this.deck = deck;
     }
 
     // Get the player's current hand as a string

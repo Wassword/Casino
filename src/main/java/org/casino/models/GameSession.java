@@ -17,6 +17,7 @@ public class GameSession {
 
     private String playerName;
     private int playerBalance;
+    @Getter
     private String gameStatus;
 
     public GameSession() {}

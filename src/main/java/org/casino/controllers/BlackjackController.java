@@ -20,7 +20,7 @@ public class BlackjackController {
     public String startGame(Model model) {
         String gameStatus = blackjackService.startGame();
         model.addAttribute("status", gameStatus);  // Add game status to the model
-        return "blackjack";  // Return the view name (e.g., a Thymeleaf HTML file called blackjack.html)
+        return "game";  // Return the view name (e.g., a Thymeleaf HTML file called blackjack.html)
     }
     @GetMapping("/status/{gameId}")
     public String getGameStatus(@PathVariable Long gameId, Model model) {
@@ -34,7 +34,7 @@ public class BlackjackController {
     public String hit(Model model) {
         String hitResult = blackjackService.playerHit();
         model.addAttribute("status", hitResult);  // Add the updated game status to the model
-        return "blackjack";  // Return the same view to display the updated game status
+        return "game";  // Return the same view to display the updated game status
     }
 
     // Player stands and returns the updated view
@@ -42,7 +42,7 @@ public class BlackjackController {
     public String stand(Model model) {
         String standResult = blackjackService.playerStand();
         model.addAttribute("status", standResult);  // Add the final game result to the model
-        return "blackjack";  // Return the view for the final result
+        return "result";  // Return the view for the final result
     }
 
     // Get the game status and display the current status view
@@ -50,6 +50,6 @@ public class BlackjackController {
     public String getStatus(Model model) {
         String gameStatus = blackjackService.getGameStatus();
         model.addAttribute("status", gameStatus);  // Add the current game status to the model
-        return "blackjack";  // Return the view to display the current game status
+        return "game";  // Return the view to display the current game status
     }
 }
