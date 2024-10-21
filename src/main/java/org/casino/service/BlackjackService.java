@@ -1,15 +1,14 @@
 package org.casino.service;
-
-
-
 import org.casino.models.Dealer;
 import org.casino.models.Deck;
+import org.casino.models.Card;
 import org.casino.models.Player;
 import org.casino.models.interfaces.DeckActions;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+@Service
 public class BlackjackService {
 
     private Player player;
@@ -18,10 +17,10 @@ public class BlackjackService {
     private boolean gameOver;
 
     public String startGame() {
+        int initialPlayerBalance = 100; // Default balance
         deck = new Deck();
-        player = new Player();
+        player = new Player(initialPlayerBalance);
         dealer = new Dealer();
-        gameOver = false;
 
         player.addCardToHand(deck.dealCard());
         player.addCardToHand(deck.dealCard());
@@ -31,6 +30,8 @@ public class BlackjackService {
 
         return "Game started. Your hand: " + player.getHand() + ". Dealer's visible card: " + dealer.getFaceUpCard();
     }
+
+
 
     public String playerHit() {
         if (!gameOver) {
@@ -81,6 +82,16 @@ public class BlackjackService {
             deck.shuffle();
             player = new Player(initialPlayerBalance);
             dealer = new Dealer();
+        }
+
+        @Override
+        public void shuffle() {
+
+        }
+
+        @Override
+        public void dealNextCard() {
+
         }
 
         @Override

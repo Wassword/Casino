@@ -1,6 +1,6 @@
 package org.casino.controllers;
 
-import org.casino.services.BlackjackService;
+import org.casino.service.BlackjackService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

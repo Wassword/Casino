@@ -1,8 +1,10 @@
 package org.casino;
 
 import org.casino.service.BlackjackService;
+import org.casino.service.Game;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Scanner;
 
@@ -12,8 +14,10 @@ public class CasinoApplication {
     public static void main(String[] args) {
         SpringApplication.run(CasinoApplication.class, args);
     }
+
     Scanner scanner = new Scanner(System.in);
     BlackjackService.Game game = new BlackjackService.Game();
+    Game game = new Game(initialPlayerBalance);
 
         System.out.println("Welcome to Blackjack!");
 
@@ -72,8 +76,4 @@ public class CasinoApplication {
         System.out.println("Thank you for playing Blackjack!");
         scanner.close();
 }
-}
 
-
-
-        }
