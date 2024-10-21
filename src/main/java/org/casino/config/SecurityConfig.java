@@ -1,6 +1,6 @@
 package org.casino.config;
 
-import com.example.demo.service.UserDetailsServiceImpl;
+import org.casino.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

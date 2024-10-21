@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package org.casino.models.interfaces;
 
-import com.example.demo.model.User;
+import org.casino.models.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
