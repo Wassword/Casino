@@ -15,7 +15,8 @@ public class Player {
     /**
      * Create a new Person
      */
-    public Player(int initialPlayerBalance, Scanner sc) {  // Pass scanner as parameter
+    public Player(int initialPlayerBalance) {
+        Scanner sc = new Scanner(System.in);// Pass scanner as parameter
         System.out.print("Enter your name: ");
         this.name = sc.nextLine();
         this.hand = new ArrayList<>();

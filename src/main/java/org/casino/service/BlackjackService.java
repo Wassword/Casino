@@ -14,10 +14,11 @@ public class BlackjackService {
     private Player player;
     private Dealer dealer;
     private Deck deck;
-    private boolean gameOver;
+    private static boolean gameOver;
 
     public String startGame() {
         int initialPlayerBalance = 100; // Default balance
+        Scanner sc = new Scanner(System.in); // Create a Scanner object
         deck = new Deck();
         player = new Player(initialPlayerBalance);
         dealer = new Dealer();
@@ -78,6 +79,7 @@ public class BlackjackService {
 
         // Constructor
         public Game(int initialPlayerBalance) {
+            Scanner sc = new Scanner(System.in);  // Create a Scanner object
             deck = new Deck();
             deck.shuffle();
             player = new Player(initialPlayerBalance);
@@ -129,7 +131,7 @@ public class BlackjackService {
             determineWinner();
         }
 
-        public void determineWinner() {
+        public String determineWinner() {
             dealer.playTurn(deck);
             int playerValue = player.calculateHandValue();
             int dealerValue = dealer.calculateHandValue();
@@ -152,6 +154,7 @@ public class BlackjackService {
                 System.out.println("It's a tie! No money won or lost.");
                 // In a tie, typically the bet is returned, so no change in balance.
             }
+            return null;
         }
 
         public void startGame() {
@@ -202,6 +205,41 @@ public class BlackjackService {
             dealer.addCardToHand(deck.dealCard());
             dealer.addCardToHand(deck.dealCard());
         }
+
+        public boolean isGameOver() {
+            return gameOver;
+        }
+
+        public String getPlayerHand() {
+            return player.getHand().toString();
+        }
+
+        public String getDealerFaceUpCard() {
+            return dealer.getHand().get(0).toString();
+        }
+
+        public String playerHit() {
+            if (!gameOver) {
+                player.addCardToHand(deck.dealCard());
+                if (player.calculateHandValue() > 21) {
+                    gameOver = true;
+                    return "You busted! Final hand: " + player.getHand() + " with " + player.calculateHandValue() + " points.";
+                }
+            }
+            return "Your hand: " + player.getHand() + " with " + player.calculateHandValue() + " points.";
+        }
+
+        public String playerStand() {
+            if (!gameOver) {
+                while (dealer.calculateHandValue() < 17) {
+                    dealer.addCardToHand(deck.dealCard());
+                }
+                gameOver = true;
+                return determineWinner();  // Call a method to determine the winner
+            }
+            return "The game is already over.";
+        }
+        }
     }
-}
+
 

@@ -9,7 +9,7 @@ public interface DeckActions {
     void shuffle();
     void dealNextCard();
     void playHand(ArrayList<Card> hand);
-    void determineWinner();
+    String determineWinner();
 }
 
 
