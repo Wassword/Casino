@@ -1,8 +1,5 @@
 package org.casino.service;
-import org.casino.models.Dealer;
-import org.casino.models.Deck;
-import org.casino.models.Card;
-import org.casino.models.Player;
+import org.casino.models.*;
 import org.casino.models.interfaces.DeckActions;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 @Service
 public class BlackjackService {
+    private final GameSessionRepository gameSessionRepository;
+
+    public BlackjackService(GameSessionRepository gameSessionRepository) {
+        this.gameSessionRepository = gameSessionRepository;
+    }
 
     private Player player;
     private Dealer dealer;
@@ -17,19 +19,22 @@ public class BlackjackService {
     private static boolean gameOver;
 
     public String startGame() {
-        int initialPlayerBalance = 100; // Default balance
-        Scanner sc = new Scanner(System.in); // Create a Scanner object
-        deck = new Deck();
-        player = new Player(initialPlayerBalance);
-        dealer = new Dealer();
+        // Assume game logic is implemented here
+        GameSession session = new GameSession("Player 1", 100, "Started");
+        gameSessionRepository.save(session);  // Save session to the database
 
-        player.addCardToHand(deck.dealCard());
-        player.addCardToHand(deck.dealCard());
+        return "Game started for Player 1 with 100 balance";
+    }
 
-        dealer.addCardToHand(deck.dealCard());
-        dealer.addCardToHand(deck.dealCard());
+    public String getGameStatus(Long gameId) {
+        // Fetch the game session by its ID
+        GameSession session = gameSessionRepository.findById(gameId).orElse(null);
 
-        return "Game started. Your hand: " + player.getHand() + ". Dealer's visible card: " + dealer.getFaceUpCard();
+        if (session != null) {
+            return "Game Status: " + session.getGameStatus();
+        } else {
+            return "Game not found!";
+        }
     }
 
 

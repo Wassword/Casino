@@ -22,6 +22,12 @@ public class BlackjackController {
         model.addAttribute("status", gameStatus);  // Add game status to the model
         return "blackjack";  // Return the view name (e.g., a Thymeleaf HTML file called blackjack.html)
     }
+    @GetMapping("/status/{gameId}")
+    public String getGameStatus(@PathVariable Long gameId, Model model) {
+        String status = blackjackService.getGameStatus(gameId);
+        model.addAttribute("status", status);
+        return "blackjack";
+    }
 
     // Player hits and returns the updated view
     @PostMapping("/hit")
