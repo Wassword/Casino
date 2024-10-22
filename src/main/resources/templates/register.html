@@ -15,11 +15,7 @@
 
         <label for="password">Password:</label>
         <input type="password" id="password" th:field="*{password}" required><br>
-
-        <label for="role">Role:</label>
-        <select id="role" name="role" required>
-            <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}">Role</option>
-        </select><br>
+        <br>
 
         <input type="submit" value="Register">
     </form>

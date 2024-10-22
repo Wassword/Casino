@@ -3,38 +3,49 @@
 <head>
     <title>Blackjack Game</title>
     <link rel="stylesheet" href="/css/style.css">
+    <!-- Optional: Include Bootstrap for a nicer layout -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Blackjack Game</h1>
+<div class="container">
+    <h1 class="my-4">Blackjack Game</h1>
 
-<div>
-    <h2>Dealer's Hand</h2>
-    <ul>
-        <li th:each="card : ${dealerHand}" th:text="${card}"></li>
-    </ul>
-</div>
+    <!-- Dealer's Hand -->
+    <div>
+        <h2>Dealer's Hand</h2>
+        <ul class="list-group">
+            <li th:each="card : ${dealerHand}" th:text="${card}" class="list-group-item"></li>
+        </ul>
+    </div>
 
-<div>
-    <h2>Your Hand</h2>
-    <ul>
-        <li th:each="card : ${playerHand}" th:text="${card}"></li>
-    </ul>
-    <p>Total: <span th:text="${playerTotal}"></span></p>
-</div>
+    <!-- Player's Hand -->
+    <div class="mt-4">
+        <h2>Your Hand</h2>
+        <ul class="list-group">
+            <li th:each="card : ${playerHand}" th:text="${card}" class="list-group-item"></li>
+        </ul>
+        <p class="mt-2">Total: <strong th:text="${playerTotal}"></strong></p>
+    </div>
 
-<div>
-    <form method="post" action="/game/hit">
-        <button type="submit">Hit</button>
-    </form>
-    <form method="post" action="/game/stand">
-        <button type="submit">Stand</button>
-    </form>
-</div>
+    <!-- Action Buttons -->
+    <div class="mt-4">
+        <form method="post" th:action="@{/blackjack/hit}" style="display: inline;">
+            <button type="submit" class="btn btn-primary">Hit</button>
+        </form>
+        <form method="post" th:action="@{/blackjack/stand}" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Stand</button>
+        </form>
+    </div>
 
-<p th:if="${gameResult != null}" th:text="${gameResult}"></p>
+    <!-- Game Result -->
+    <div class="mt-4">
+        <p th:if="${gameResult != null}" class="alert alert-info" th:text="${gameResult}"></p>
+    </div>
 
-<div>
-    <a href="/game" class="btn btn-primary">New Game</a>
+    <!-- New Game Button -->
+    <div class="mt-4">
+        <a href="/blackjack/start" class="btn btn-success">Start New Game</a>
+    </div>
 </div>
 </body>
 </html>
