@@ -17,13 +17,19 @@ public class BlackjackController {
         this.blackjackService = blackjackService;
     }
 
-    // Start the game and return a view
-    @PostMapping("/start")
-    public String startGame(Model model) {
-        String gameStatus = blackjackService.startGame();
-        model.addAttribute("status", gameStatus);  // Add game status to the model
-        return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
+
+    @GetMapping("")
+    public String game() {
+        return "game";
     }
+
+    // Start the game and return a view
+//    @PostMapping("/start")
+//    public String startGame(Model model) {
+//        String gameStatus = blackjackService.startGame();
+//        model.addAttribute("status", gameStatus);  // Add game status to the model
+//        return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
+//    }
 
     // Player hits and returns the updated view
     @PostMapping("/hit")
@@ -39,13 +45,5 @@ public class BlackjackController {
         String standResult = blackjackService.playerStand();
         model.addAttribute("status", standResult);  // Add the final game result to the model
         return "result";  // Return the view for the final result
-    }
-
-    // Display the current status view with a gameId parameter
-    @GetMapping("/status")
-    public String getStatus(@RequestParam("gameId") Long gameId, Model model) {
-        String gameStatus = blackjackService.getGameStatus(gameId);
-        model.addAttribute("status", gameStatus);  // Add the current game status to the model
-        return "game";  // Ensure the 'game.html' view exists
     }
 }

@@ -27,4 +27,14 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/login?registered";
     }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    // Mapping for the logout page (logout.html)
+    @GetMapping("/logout")
+    public String logout() {
+        return "logout";
+    }
 }

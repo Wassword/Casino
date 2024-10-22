@@ -11,13 +11,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-
     private final UserRepository userRepository;
+
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -29,12 +31,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Map the User to Spring Security's UserDetails
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        // Return the UserDetails without roles
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(authority)
+                user.getEnabled(), // Whether the user is enabled or not
+                true, // accountNonExpired
+                true, // credentialsNonExpired
+                true, // accountNonLocked
+                Collections.emptyList() // No authorities/roles
         );
     }
 }
+

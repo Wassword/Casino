@@ -2,31 +2,45 @@ package org.casino.models;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class Deck {
     private ArrayList<Card> cards;
 
-
     public Deck() {
         cards = new ArrayList<>();
-        //Go through all the suits
+        // Go through all the suits
         for (Suits suit : Suits.values()) {
-            //go through all values(ranks)
+            // Go through all values (ranks)
             for (Values value : Values.values()) {
-                //add a new card containing each iteration suit and rank
+                // Add a new card containing each iteration's suit and rank
                 cards.add(new Card(suit, value));
             }
         }
     }
-    public void shuffle(){
+
+    public void shuffle() {
         Collections.shuffle(cards);
     }
 
-    public Card dealCard(){
-        return cards.remove(0);
+    public Card dealCard() {
+        // Check if the deck is empty before dealing
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("The deck is empty, no more cards to deal.");
+        }
+        return cards.remove(0); // Consider using remove(cards.size() - 1) to deal from the end
     }
 
-    public int getRemainingCards(){
+    public int getRemainingCards() {
         return cards.size();
+    }
+
+    // Optional: Reset the deck if needed
+    public void resetDeck() {
+        cards.clear();
+        for (Suits suit : Suits.values()) {
+            for (Values value : Values.values()) {
+                cards.add(new Card(suit, value));
+            }
+        }
+        shuffle();
     }
 }

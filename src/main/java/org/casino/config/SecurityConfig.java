@@ -29,20 +29,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/login", "/register", "/error", "/css/**", "/js/**").permitAll() // Public pages
-                                .requestMatchers("/menu-management").hasAnyRole("STAFF", "ADMIN")
-                                .requestMatchers("/orders-processing").hasRole("STAFF")
-                                .requestMatchers("/table-management").hasRole("STAFF")
-                                .requestMatchers("/inventory-management").hasRole("ADMIN")
-                                .requestMatchers("/sales-report").hasRole("ADMIN")
-                                .requestMatchers("/api/inventory/**").hasRole("ADMIN") // Securing Inventory API
-                                .requestMatchers("/api/orders/**").hasRole("STAFF") // Securing Orders API
-                                .requestMatchers("/tables/**").hasRole("STAFF") // Securing Tables API
                                 .anyRequest().authenticated() // Ensure other requests are authenticated
                 )
                 .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")
-                                .defaultSuccessUrl("/dashboard", true) // Redirect to dashboard on successful login
+                                .defaultSuccessUrl("/", true) // Redirect to dashboard on successful login
                                 .permitAll()
                 )
                 .logout(logout ->

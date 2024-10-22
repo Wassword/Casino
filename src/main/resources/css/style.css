@@ -133,3 +133,20 @@ h1, h2, p, ul, li {
         }
     }
 }
+
+/* Position the login and register buttons in the top-right corner */
+.top-right-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Style the buttons to have spacing between them */
+.top-right-buttons .btn {
+    margin-left: 10px;
+}
+
+.container {
+    text-align: center;
+    padding-top: 100px; /* Add padding to ensure space between the buttons and the content */
+}

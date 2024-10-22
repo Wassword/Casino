@@ -3,9 +3,7 @@ package org.casino.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -26,8 +24,11 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    // Game-specific (previously Player-related) attributes
-    @Transient  // Marking this as transient if it's not intended to be stored in the DB
+    @Column(nullable = false)
+    private int totalWins = 0;  // New field to track total wins
+
+    // Game-specific (Player-related) attributes
+    @Transient
     private ArrayList<Card> hand = new ArrayList<>();
 
     @Column
@@ -70,7 +71,7 @@ public class User {
         int aceCount = 0;
 
         for (Card card : hand) {
-            totalPoints += card.getValue().getValue();  // Assuming Card has a getValue() method
+            totalPoints += card.getValue().getValue();
             if (card.getValue() == Values.ACE) {
                 aceCount++;
             }

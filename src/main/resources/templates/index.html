@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casino Home</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<!-- Top-right container for login and register buttons -->
+<div class="top-right-buttons">
+    <!-- Login Button -->
+    <a href="/login" class="btn btn-success">Login</a>
+
+    <!-- Register Button -->
+    <a href="/register" class="btn btn-info">Register</a>
+</div>
+
+<!-- Main content container -->
 <div class="container">
     <h1 th:text="${welcomeMessage}">Welcome to the Casino!</h1>
-    <p>Click the button below to start playing.</p>
+    <p>Click the button below to start playing or log in/register to manage your account.</p>
 
-    <a href="/blackjack/start" class="btn btn-primary">Play Blackjack</a>
+    <!-- Play Blackjack Button -->
+    <a href="/blackjack" class="btn btn-primary">Play Blackjack</a>
 </div>
 </body>
 </html>

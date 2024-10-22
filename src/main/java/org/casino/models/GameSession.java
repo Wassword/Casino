@@ -8,24 +8,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class GameSession {
-    @Getter
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String playerName;
     private int playerBalance;
-    @Getter
     private String gameStatus;
 
+    // Default constructor (required by JPA)
     public GameSession() {}
 
+    // Parameterized constructor for easier initialization
     public GameSession(String playerName, int playerBalance, String gameStatus) {
         this.playerName = playerName;
         this.playerBalance = playerBalance;
         this.gameStatus = gameStatus;
     }
-
 }

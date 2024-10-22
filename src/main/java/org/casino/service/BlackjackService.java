@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.casino.config.AppProperties;
 import org.casino.models.*;
 import org.casino.models.interfaces.GameSessionRepository;
+import org.casino.models.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,23 +12,25 @@ import org.springframework.stereotype.Service;
 public class BlackjackService {
 
     private final GameSessionRepository gameSessionRepository;
+    private final UserRepository userRepository;
+
     private User user;
     private Dealer dealer;
     private Deck deck;
-    // Game status helper methods
+
     @Getter
     private boolean gameOver;
 
     // Constructor
     @Autowired
-    public BlackjackService(GameSessionRepository gameSessionRepository, AppProperties appProperties) {
+    public BlackjackService(GameSessionRepository gameSessionRepository, UserRepository userRepository, AppProperties appProperties) {
         this.gameSessionRepository = gameSessionRepository;
-        // Injected AppProperties
+        this.userRepository = userRepository;
 
-        // Using AppProperties for initialization
-        this.user = new User("john_doe", "password123", 100); // Example initialization
-        this.dealer = new Dealer();  // Example initialization
-        this.deck = new Deck();      // Example initialization
+        // Example initialization using AppProperties
+        this.user = new User(appProperties.getDefaultUsername(), appProperties.getDefaultPassword(), appProperties.getDefaultBalance());
+        this.dealer = new Dealer();
+        this.deck = new Deck();
         this.gameOver = false;
     }
 
@@ -37,8 +40,10 @@ public class BlackjackService {
         gameSessionRepository.save(session); // Save session to the database
 
         // Deal initial cards to both the user and dealer
-        user.clearHand();  // Clear previous hand
-        dealer.clearHand();  // Clear previous dealer hand
+        user.clearHand();
+        dealer.clearHand();
+
+        deck.shuffle(); // Shuffle the deck before dealing
 
         user.addCardToHand(deck.dealCard());
         user.addCardToHand(deck.dealCard());
@@ -48,6 +53,7 @@ public class BlackjackService {
 
         return "Game started for " + user.getUsername() + " with " + user.getBalance() + " balance.";
     }
+
     // Get the game status
     public String getGameStatus(Long gameId) {
         GameSession session = gameSessionRepository.findById(gameId).orElse(null);
@@ -91,8 +97,14 @@ public class BlackjackService {
         int dealerPoints = dealer.calculateHandValue();
 
         if (dealerPoints > 21) {
+            user.adjustBalance(true); // Adjust balance if player wins
+            user.setTotalWins(user.getTotalWins() + 1); // Increment wins
+            userRepository.save(user); // Save the updated user
             return "Dealer busted! You win. Dealer hand: " + dealer.getHand();
         } else if (userPoints > dealerPoints) {
+            user.adjustBalance(true); // Adjust balance if player wins
+            user.setTotalWins(user.getTotalWins() + 1); // Increment wins
+            userRepository.save(user); // Save the updated user
             return "You win! Your hand: " + user.getHand() + " (Total Points: " + userPoints + ")";
         } else if (dealerPoints > userPoints) {
             return "Dealer wins. Dealer hand: " + dealer.getHand() + " (Total Points: " + dealerPoints + ")";
@@ -106,6 +118,14 @@ public class BlackjackService {
     }
 
     public String getDealerFaceUpCard() {
-        return dealer.getHand().getFirst().toString();  // Assuming dealer reveals the first card
+        return dealer.getHand().get(0).toString();  // Assuming dealer reveals the first card
+    }
+
+    // Helper to reset game
+    public void resetGame() {
+        this.gameOver = false;
+        user.clearHand();
+        dealer.clearHand();
+        deck.shuffle();
     }
 }
