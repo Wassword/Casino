@@ -1,6 +1,7 @@
 package org.casino.controllers;
 
 import org.casino.service.BlackjackService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ public class BlackjackController {
 
     private final BlackjackService blackjackService;
 
+    @Autowired
     public BlackjackController(BlackjackService blackjackService) {
         this.blackjackService = blackjackService;
     }
@@ -20,13 +22,7 @@ public class BlackjackController {
     public String startGame(Model model) {
         String gameStatus = blackjackService.startGame();
         model.addAttribute("status", gameStatus);  // Add game status to the model
-        return "game";  // Return the view name (e.g., a Thymeleaf HTML file called blackjack.html)
-    }
-    @GetMapping("/status/{gameId}")
-    public String getGameStatus(@PathVariable Long gameId, Model model) {
-        String status = blackjackService.getGameStatus(gameId);
-        model.addAttribute("status", status);
-        return "blackjack";
+        return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
     }
 
     // Player hits and returns the updated view
@@ -45,11 +41,11 @@ public class BlackjackController {
         return "result";  // Return the view for the final result
     }
 
-    // Get the game status and display the current status view
+    // Display the current status view with a gameId parameter
     @GetMapping("/status")
-    public String getStatus(Model model) {
-        String gameStatus = blackjackService.getGameStatus();
+    public String getStatus(@RequestParam("gameId") Long gameId, Model model) {
+        String gameStatus = blackjackService.getGameStatus(gameId);
         model.addAttribute("status", gameStatus);  // Add the current game status to the model
-        return "game";  // Return the view to display the current game status
+        return "game";  // Ensure the 'game.html' view exists
     }
 }
