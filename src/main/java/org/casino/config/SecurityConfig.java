@@ -1,13 +1,13 @@
-package org.casino.config;
+package com.example.demo.config;
 
-import org.casino.service.UserDetailsServiceImpl;
+import com.example.demo.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,48 +16,47 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // Service to load user-specific data
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();  // Your custom user details service
-    }
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
-    // Password encoder to hash passwords
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // DaoAuthenticationProvider with userDetailsService and password encoder
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    // Configure authentication manager
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf().disable()  // Disable CSRF for simplicity
-                .authorizeRequests()
-                .requestMatchers("/blackjack/**").authenticated()  // Requires authentication for Blackjack endpoints
-                .anyRequest().permitAll()  // Allows unrestricted access to all other endpoints
-                .and()
-                .formLogin()  // Enable form-based login
-                .loginPage("/login").permitAll()  // Custom login page, if you implement it
-                .and()
-                .logout()  // Enable logout functionality
-                .permitAll()
-                .and()
-                .build();
-    }
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/", "/login", "/register", "/error", "/css/**", "/js/**").permitAll() // Public pages
+                                .requestMatchers("/menu-management").hasAnyRole("STAFF", "ADMIN")
+                                .requestMatchers("/orders-processing").hasRole("STAFF")
+                                .requestMatchers("/table-management").hasRole("STAFF")
+                                .requestMatchers("/inventory-management").hasRole("ADMIN")
+                                .requestMatchers("/sales-report").hasRole("ADMIN")
+                                .requestMatchers("/api/inventory/**").hasRole("ADMIN") // Securing Inventory API
+                                .requestMatchers("/api/orders/**").hasRole("STAFF") // Securing Orders API
+                                .requestMatchers("/tables/**").hasRole("STAFF") // Securing Tables API
+                                .anyRequest().authenticated() // Ensure other requests are authenticated
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/dashboard", true) // Redirect to dashboard on successful login
+                                .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .permitAll()
+                )
+                .userDetailsService(userDetailsService);
 
-    // Configuring authentication provider
-    @Bean
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        return http.build();
     }
 }
