@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Getter
 @Component
-//@ConfigurationProperties(prefix = "app")
+@ConfigurationProperties(prefix = "app")
 public class AppProperties {
 
     // Getters and Setters
