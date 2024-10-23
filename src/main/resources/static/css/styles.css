@@ -1,0 +1,143 @@
+/* Apply checkerboard background */
+body {
+    background-color: black;
+    background-image:
+            linear-gradient(45deg, red 25%, transparent 25%),
+            linear-gradient(-45deg, red 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, red 75%),
+            linear-gradient(-45deg, transparent 75%, red 75%),
+            linear-gradient(45deg, transparent 25%, black 25%),
+            linear-gradient(-45deg, transparent 25%, black 25%),
+            linear-gradient(45deg, black 75%, transparent 75%),
+            linear-gradient(-45deg, black 75%, transparent 75%);
+    background-size: 80px 80px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0;
+
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Container for the content */
+.container {
+    background-color: #006400; /* Green to mimic a dealer's table */
+    border: 10px solid #8B4513; /* Brown border for a wooden look */
+    border-radius: 50%; /* Make it a perfect circle */
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    max-width: 600px;
+    max-height: 600px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: center; /* Center the text */
+}
+
+/* Styling for text */
+h1, h2, p, ul, li {
+    color: black;
+}
+
+/* Container for the registration form */
+.registerbox {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 16px;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Change border color on input focus */
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Submit Button Styling */
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the submit button */
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 480px) {
+    .registerbox {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    input[type="text"], input[type="password"] {
+        font-size: 14px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Position the login and register buttons in the top-right corner */
+.top-right-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Style the buttons to have spacing between them */
+.top-right-buttons .btn {
+    margin-left: 10px;
+}
