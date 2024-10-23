@@ -3,7 +3,6 @@ package org.casino.service;
 import lombok.Getter;
 import org.casino.config.AppProperties;
 import org.casino.models.*;
-import org.casino.models.interfaces.GameSessionRepository;
 import org.casino.models.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,23 +10,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlackjackService {
 
-    private final GameSessionRepository gameSessionRepository;
     private final UserRepository userRepository;
-
-    private final User user;
-    private final Dealer dealer;
-    private final Deck deck;
-
+    private User user;
+    private Dealer dealer;
+    private Deck deck;
     @Getter
     private boolean gameOver;
 
     // Constructor
     @Autowired
-    public BlackjackService(GameSessionRepository gameSessionRepository, UserRepository userRepository, AppProperties appProperties) {
-        this.gameSessionRepository = gameSessionRepository;
+    public BlackjackService(UserRepository userRepository, AppProperties appProperties) {
         this.userRepository = userRepository;
-
-        // Example initialization using AppProperties
         this.user = new User(appProperties.getDefaultUsername(), appProperties.getDefaultPassword(), appProperties.getDefaultBalance());
         this.dealer = new Dealer();
         this.deck = new Deck();
@@ -36,32 +29,18 @@ public class BlackjackService {
 
     // Start the game
     public String startGame() {
-        GameSession session = new GameSession(user.getUsername(), user.getBalance(), "Started");
-        gameSessionRepository.save(session); // Save session to the database
-
-        // Deal initial cards to both the user and dealer
+        // Reset player hand, dealer hand, and shuffle deck
         user.clearHand();
         dealer.clearHand();
+        deck.shuffle();
 
-        deck.shuffle(); // Shuffle the deck before dealing
-
+        // Deal initial cards
         user.addCardToHand(deck.dealCard());
         user.addCardToHand(deck.dealCard());
-
         dealer.addCardToHand(deck.dealCard());
         dealer.addCardToHand(deck.dealCard());
 
         return "Game started for " + user.getUsername() + " with " + user.getBalance() + " balance.";
-    }
-
-    // Get the game status
-    public String getGameStatus(Long gameId) {
-        GameSession session = gameSessionRepository.findById(gameId).orElse(null);
-        if (session != null) {
-            return "Game Status: " + session.getGameStatus();
-        } else {
-            return "Game not found!";
-        }
     }
 
     // Player hits
@@ -97,13 +76,13 @@ public class BlackjackService {
         int dealerPoints = dealer.calculateHandValue();
 
         if (dealerPoints > 21) {
-            user.adjustBalance(true); // Adjust balance if player wins
-            user.setTotalWins(user.getTotalWins() + 1); // Increment wins
+            user.adjustBalance(true);
+            user.setTotalWins(user.getTotalWins() + 1); // Increment total wins
             userRepository.save(user); // Save the updated user
             return "Dealer busted! You win. Dealer hand: " + dealer.getHand();
         } else if (userPoints > dealerPoints) {
-            user.adjustBalance(true); // Adjust balance if player wins
-            user.setTotalWins(user.getTotalWins() + 1); // Increment wins
+            user.adjustBalance(true);
+            user.setTotalWins(user.getTotalWins() + 1); // Increment total wins
             userRepository.save(user); // Save the updated user
             return "You win! Your hand: " + user.getHand() + " (Total Points: " + userPoints + ")";
         } else if (dealerPoints > userPoints) {
@@ -119,13 +98,5 @@ public class BlackjackService {
 
     public String getDealerFaceUpCard() {
         return dealer.getHand().get(0).toString();  // Assuming dealer reveals the first card
-    }
-
-    // Helper to reset game
-    public void resetGame() {
-        this.gameOver = false;
-        user.clearHand();
-        dealer.clearHand();
-        deck.shuffle();
     }
 }
