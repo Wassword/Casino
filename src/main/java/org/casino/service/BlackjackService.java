@@ -14,9 +14,9 @@ public class BlackjackService {
     private final GameSessionRepository gameSessionRepository;
     private final UserRepository userRepository;
 
-    private User user;
-    private Dealer dealer;
-    private Deck deck;
+    private final User user;
+    private final Dealer dealer;
+    private final Deck deck;
 
     @Getter
     private boolean gameOver;

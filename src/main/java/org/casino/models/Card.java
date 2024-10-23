@@ -2,8 +2,8 @@ package org.casino.models;
 
 public class Card {
     //Attributes
-    private Suits suit;
-    private Values value;
+    private final Suits suit;
+    private final Values value;
 
     //Create a (Constructor method) card given a suit and a value(Rank)
     public Card(Suits suit, Values value) {
