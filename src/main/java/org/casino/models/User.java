@@ -24,8 +24,9 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @Column(nullable = false)
-    private int totalWins = 0;  // New field to track total wins
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int totalWins = 0;
+    // New field to track total wins
 
     // Game-specific (Player-related) attributes
     @Transient
