@@ -24,19 +24,19 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled = true;
 
+    // Track total wins for leaderboard
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int totalWins = 0;
-    // New field to track total wins
 
     // Game-specific (Player-related) attributes
     @Transient
     private ArrayList<Card> hand = new ArrayList<>();
 
-    @Column
-    private int balance;
+    @Column(nullable = false, columnDefinition = "integer default 100")
+    private int balance;  // Player balance (set default as 100)
 
-    @Column
-    private int currentBet;
+    @Column(nullable = false, columnDefinition = "integer default 100")
+    private int currentBet;  // Player current bet (set default as 100)
 
     /**
      * Constructor with username, password, and balance
@@ -49,6 +49,7 @@ public class User {
         this.currentBet = 100;  // Default bet amount
     }
 
+    // Default constructor
     public User() {
         this.hand = new ArrayList<>();
         this.balance = 100;  // Default balance
@@ -57,8 +58,9 @@ public class User {
 
     // --- Game-specific methods ---
 
+    // Place a bet and deduct the amount from balance
     public void placeBet(int betAmount) {
-        if (betAmount % 5 != 0 || betAmount > balance || betAmount <= 0) {
+        if (betAmount <= 0 || betAmount > balance || betAmount % 5 != 0) {
             throw new IllegalArgumentException("Invalid bet amount.");
         }
         currentBet = betAmount;
@@ -67,6 +69,7 @@ public class User {
         System.out.println("Your current balance is now " + balance);
     }
 
+    // Calculate total points of player's hand
     public int calculatePoints() {
         int totalPoints = 0;
         int aceCount = 0;
@@ -86,6 +89,7 @@ public class User {
         return totalPoints;
     }
 
+    // Double down the bet
     public void doubleDown() {
         if (balance >= currentBet) {
             balance -= currentBet;
@@ -95,17 +99,20 @@ public class User {
         }
     }
 
+    // Adjust the balance based on game result (win or lose)
     public void adjustBalance(boolean playerWins) {
         if (playerWins) {
             balance += 2 * currentBet;  // Winnings include the initial bet + profit
         }
-        currentBet = 10;  // Reset to a default bet for the next round
+        currentBet = 100;  // Reset to a default bet for the next round
     }
 
+    // Add a card to player's hand
     public void addCardToHand(Card card) {
         this.hand.add(card);
     }
 
+    // Calculate total value of cards in player's hand
     public int calculateHandValue() {
         int value = 0;
         int aceCount = 0;
@@ -123,6 +130,7 @@ public class User {
         return value;
     }
 
+    // Clear the player's hand after each round or game
     public void clearHand() {
         this.hand.clear();
     }
