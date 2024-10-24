@@ -15,7 +15,7 @@
     <div>
         <h2>Dealer's Hand</h2>
         <ul class="list-group">
-            <li th:each="card : ${dealerHand}" th:text="${card}" class="list-group-item"></li>
+            <li th:each="hand : ${Dealer}" th:text="${hand.hand}" class="list-group-item"></li>
         </ul>
     </div>
 
@@ -45,8 +45,11 @@
 
     <!-- New Game Button -->
     <div class="mt-4">
-        <a href="/blackjack" class="btn btn-success">Start New Game</a>
+        <form action="/blackjack/start" method="post">
+            <button type="submit" class="btn btn-success">Start Game</button>
+        </form>
     </div>
+
 </div>
 </body>
 </html>

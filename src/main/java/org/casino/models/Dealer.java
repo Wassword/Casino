@@ -1,8 +1,14 @@
 package org.casino.models;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import java.util.ArrayList;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+@AllArgsConstructor
+@Setter
 @Getter
+@Component
 public class Dealer {
     private final ArrayList<Card> hand;
 
@@ -42,12 +48,16 @@ public class Dealer {
 
     public String getFaceUpCard() {
         if (!hand.isEmpty()) {
-            return hand.get(0).toString(); // Assuming the first card is the face-up card
+            return hand.getFirst().toString(); // Assuming the first card is the face-up card
         }
         return "No cards in hand";
     }
 
     public void clearHand() {
         this.hand.clear();
+    }
+
+    public boolean shouldHit() {
+        return calculateHandValue() < 21;
     }
 }
