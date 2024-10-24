@@ -1,6 +1,6 @@
 /* Apply checkerboard background */
 body {
-    background-color: black;
+    background-color: #000000;
     background-image:
             linear-gradient(45deg, red 25%, transparent 25%),
             linear-gradient(-45deg, red 25%, transparent 25%),
@@ -10,7 +10,7 @@ body {
             linear-gradient(-45deg, transparent 25%, black 25%),
             linear-gradient(45deg, black 75%, transparent 75%),
             linear-gradient(-45deg, black 75%, transparent 75%);
-    background-size: 80px 80px;
+    background-size: 40px 40px;
     background-position: 0 0, 0 20px, 20px -20px, -20px 0;
 
     font-family: 'Arial', sans-serif;
@@ -24,8 +24,8 @@ body {
 
 /* Container for the content */
 .container {
-    background-color: #006400; /* Green to mimic a dealer's table */
-    border: 10px solid #8B4513; /* Brown border for a wooden look */
+    background-color: #1a571a; /* Green to mimic a dealer's table */
+    border: 10px solid #000000; /* Brown border for a wooden look */
     border-radius: 50%; /* Make it a perfect circle */
     padding: 40px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
@@ -47,14 +47,16 @@ h1, h2, p, ul, li {
 }
 
 /* Container for the registration form */
-.registerbox {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+.loginbox, .loginerror, .registerbox {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #400606;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
     width: 100%;
-    box-sizing: border-box;
+    margin: 20px auto;
 }
 
 h1 {

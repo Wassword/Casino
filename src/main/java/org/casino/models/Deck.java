@@ -1,7 +1,18 @@
 package org.casino.models;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Component
 public class Deck {
     private final ArrayList<Card> cards;
 
@@ -26,7 +37,7 @@ public class Deck {
         if (cards.isEmpty()) {
             throw new IllegalStateException("The deck is empty, no more cards to deal.");
         }
-        return cards.remove(0); // Consider using remove(cards.size() - 1) to deal from the end
+        return cards.removeFirst(); // Consider using remove(cards.size() - 1) to deal from the end
     }
 
     public int getRemainingCards() {
