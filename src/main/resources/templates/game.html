@@ -13,10 +13,12 @@
 
     <!-- Dealer's Hand -->
     <div>
-        <h2>Dealer's Hand</h2>
-        <ul class="list-group">
-            <li th:each="hand : ${Dealer}" th:text="${hand.hand}" class="list-group-item"></li>
-        </ul>
+        <div class="mb-3">
+            <h2>Dealer's Hand</h2>
+            <ul class="list-group">
+                <li th:each="card : ${dealerHand}" th:text="${card}" class="list-group-item"></li>
+            </ul>
+        </div>
     </div>
 
     <!-- Player's Hand -->
@@ -40,12 +42,12 @@
 
     <!-- Game Result -->
     <div class="mt-4">
-        <p th:if="${gameResult != null}" class="alert alert-info" th:text="${gameResult}"></p>
+        <p th:if="${status != null}" class="alert alert-info" th:text="${status}"></p>
     </div>
 
     <!-- New Game Button -->
     <div class="mt-4">
-        <form action="/blackjack/start" method="post">
+        <form action="/blackjack" method="post">
             <button type="submit" class="btn btn-success">Start Game</button>
         </form>
     </div>

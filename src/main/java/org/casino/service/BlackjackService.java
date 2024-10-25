@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.NoSuchElementException;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -78,13 +80,19 @@ public class BlackjackService {
 
     // Get player's current hand
     public String getPlayerHand() {
+        if (user.getHand().isEmpty()) {
+            throw new NoSuchElementException("Player's hand is empty");
+        }
         return user.getHand().toString();
     }
 
-    // Get dealer's face-up card
     public String getDealerFaceUpCard() {
-        return dealer.getHand().getFirst().toString();
+        if (dealer.getHand().isEmpty()) {
+            throw new NoSuchElementException("Dealer has no cards to show");
+        }
+        return dealer.getHand().getFirst().toString();  // Show first card
     }
+
 
     // Private methods for better code structure
 

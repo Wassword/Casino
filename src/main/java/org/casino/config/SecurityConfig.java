@@ -21,32 +21,32 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(authorizeRequests ->
-//                        authorizeRequests
-//
-//                                .requestMatchers("/","/css/**", "/js/**").permitAll() // Public pages
-//                                .anyRequest().authenticated() // Ensure other requests are authenticated
-//                )
-//                .formLogin(formLogin ->
-//                        formLogin
-//                                .loginPage("/login")
-//                                .permitAll()
-//                )
-//                .logout(logout ->
-//                        logout
-//                                .logoutUrl("/logout")
-//                                .logoutSuccessUrl("/login?logout")
-//                                .invalidateHttpSession(true)
-//                                .deleteCookies("JSESSIONID")
-//                                .permitAll()
-//                )
-//                .userDetailsService(userDetailsService);
-//
-//        return http.build();
-//    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+
+                                .requestMatchers("/","/css/**","/blackjack/**","/login","register").permitAll() // Public pages
+                                .anyRequest().authenticated() // Ensure other requests are authenticated
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .permitAll()
+                )
+                .userDetailsService(userDetailsService);
+
+        return http.build();
+    }
 }

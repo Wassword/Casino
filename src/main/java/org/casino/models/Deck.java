@@ -10,8 +10,6 @@ import java.util.Collections;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Component
 public class Deck {
     private final ArrayList<Card> cards;

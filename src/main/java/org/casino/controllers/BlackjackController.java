@@ -5,12 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/blackjack")
 public class BlackjackController {
 
     private final BlackjackService blackjackService;
+    private static final Logger logger = LoggerFactory.getLogger(BlackjackController.class);
 
     @Autowired
     public BlackjackController(BlackjackService blackjackService) {
@@ -23,14 +28,25 @@ public class BlackjackController {
         return "game";
     }
     // Start the game and return the initial game view
-    @PostMapping("/start")
+    @PostMapping("")
     public String startGame(Model model) {
-        String gameStatus = blackjackService.startGame(); // Start the game using the service
-        model.addAttribute("status", gameStatus);  // Add game status to the model
-        model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's hand
-        model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());  // Add dealer's face-up card
-        return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
+        try {
+            logger.info("Starting a new game");
+            String gameStatus = blackjackService.startGame();  // Start the game
+            logger.info("Game started successfully");
+
+            model.addAttribute("status", gameStatus);  // Add game status to the model
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's hand
+            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());  // Add dealer's face-up card
+
+            return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
+        } catch (NoSuchElementException e) {
+            logger.error("Error in starting the game: " + e.getMessage());
+            model.addAttribute("errorMessage", "Error: " + e.getMessage());
+            return "error";  // You can show an error page with this message
+        }
     }
+
 
     // Player hits and returns the updated view
     @PostMapping("/hit")
