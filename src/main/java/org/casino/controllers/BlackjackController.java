@@ -30,6 +30,7 @@ public class BlackjackController {
      */
     @GetMapping("")
     public String game() {
+
         return "game";
     }
 
@@ -39,7 +40,7 @@ public class BlackjackController {
      * @param model the model to hold game data.
      * @return the game view with initial game status.
      */
-    @PostMapping("")
+    @PostMapping("/start")
     public String startGame(Model model) {
         try {
             logger.info("Starting a new Blackjack game.");
@@ -49,7 +50,11 @@ public class BlackjackController {
 
             model.addAttribute("status", gameStatus);
             model.addAttribute("playerHand", blackjackService.getPlayerHand());
-            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+            model.addAttribute("dealerHand", blackjackService.getDealerHand());
+            model.addAttribute("dealerFaceDownCard", blackjackService.getDealerFaceDownCard());
+            model.addAttribute("dealerFaceUpCard", blackjackService.getDealerFaceUpCard());
+
+
 
             return "game";
         } catch (NoSuchElementException e) {
@@ -77,6 +82,18 @@ public class BlackjackController {
             model.addAttribute("status", hitResult);
             model.addAttribute("playerHand", blackjackService.getPlayerHand());
             model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+            model.addAttribute("dealerFaceDownCard", blackjackService.getDealerFaceDownCard());
+
+            if (hitResult.contains("busted")) {
+                String standResult = blackjackService.playerStand();
+
+                model.addAttribute("resultMessage", standResult);
+                model.addAttribute("playerHand", blackjackService.getPlayerHand());
+                model.addAttribute("dealerHand", blackjackService.getDealerHand());
+                model.addAttribute("playerTotal", blackjackService.calculateHandValue());
+                return "result";  // Redirect to result page if player busts
+            }
+
 
             return "game";
         } catch (IllegalStateException e) {
@@ -101,10 +118,10 @@ public class BlackjackController {
         try {
             String standResult = blackjackService.playerStand();
 
-            model.addAttribute("status", standResult);
+            model.addAttribute("resultMessage", standResult);
             model.addAttribute("playerHand", blackjackService.getPlayerHand());
             model.addAttribute("dealerHand", blackjackService.getDealerHand());
-
+            model.addAttribute("playerTotal", blackjackService.calculateHandValue());
             return "result";
         } catch (IllegalStateException e) {
             logger.error("Error during stand action: {}", e.getMessage());

@@ -47,21 +47,6 @@ public class Dealer {
         return value;
     }
 
-    // Dealer's turn logic: continues hitting until hand value reaches at least 17
-    public void playTurn(Deck deck) {
-        while (calculateHandValue() < 17) {
-            addCardToHand(deck.dealCard());
-        }
-    }
-
-    // Get the face-up card (typically the first card dealt to the dealer)
-    public String getFaceUpCard() {
-        if (!hand.isEmpty()) {
-            return hand.getFirst().toString();  // First card in the hand as the face-up card
-        }
-        return "No cards in hand";
-    }
-
     // Clears the dealer's hand at the beginning of each new game
     public void clearHand() {
         this.hand.clear();

@@ -51,18 +51,4 @@ public class HomeController {
             return "error";
         }
     }
-
-    /**
-     * Displays the result page after a game round ends.
-     *
-     * @param model the model to pass result messages to the view.
-     * @return the name of the Thymeleaf template for the result page.
-     */
-    @GetMapping("/result")
-    public String result(Model model) {
-        String resultMessage = "Game Over! Check your final score.";
-        model.addAttribute("resultMessage", resultMessage);
-        logger.info("Result page accessed with result message: {}", resultMessage);
-        return "result";
-    }
 }

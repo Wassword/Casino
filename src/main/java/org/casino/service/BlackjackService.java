@@ -73,7 +73,7 @@ public class BlackjackService {
      */
     public String playerStand() {
         if (gameOver) {
-            return "Game is already over.";
+            return handleBust();
         }
 
         playDealerTurn();
@@ -196,5 +196,15 @@ public class BlackjackService {
         }
         return dealer.getHand().toString();
     }
+    public String getDealerFaceDownCard() {
+        if (dealer.getHand().size() < 2) {
+            return "No face-down card available.";
+        }
+        return "Hidden";  // Placeholder for the face-down card
+    }
 
+
+    public Object calculateHandValue() {
+        return user.calculateHandValue();
+    }
 }
