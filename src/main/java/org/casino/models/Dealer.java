@@ -1,37 +1,44 @@
 package org.casino.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Setter
 @Getter
 @Component
 public class Dealer {
-    private final ArrayList<Card> hand;
 
+    private final List<Card> hand;
+
+    // Default constructor initializing an empty hand
     public Dealer() {
         this.hand = new ArrayList<>();
     }
 
+    // Add a card to the dealer's hand
     public void addCardToHand(Card card) {
         this.hand.add(card);
     }
 
+    // Calculate the total value of the dealer's hand
     public int calculateHandValue() {
         int value = 0;
         int aceCount = 0;
 
         for (Card card : hand) {
-            value += card.getValue().getValue();
-            if (card.getValue() == Values.ACE) {
+            value += card.getBlackjackValue();
+            if (card.isAce()) {
                 aceCount++;
             }
         }
 
-        // Adjust for Aces
+        // Adjust for Aces if the value exceeds 21
         while (value > 21 && aceCount > 0) {
             value -= 10;
             aceCount--;
@@ -40,24 +47,40 @@ public class Dealer {
         return value;
     }
 
+    // Dealer's turn logic: continues hitting until hand value reaches at least 17
     public void playTurn(Deck deck) {
         while (calculateHandValue() < 17) {
             addCardToHand(deck.dealCard());
         }
     }
 
+    // Get the face-up card (typically the first card dealt to the dealer)
     public String getFaceUpCard() {
         if (!hand.isEmpty()) {
-            return hand.getFirst().toString(); // Assuming the first card is the face-up card
+            return hand.getFirst().toString();  // First card in the hand as the face-up card
         }
         return "No cards in hand";
     }
 
+    // Clears the dealer's hand at the beginning of each new game
     public void clearHand() {
         this.hand.clear();
     }
 
+    // Determines if the dealer should hit (continue playing) based on Blackjack rules
     public boolean shouldHit() {
-        return calculateHandValue() < 21;
+        return calculateHandValue() < 17;
+    }
+
+    // Helper method to display the dealer's entire hand (useful for game results)
+    public String showHand() {
+        if (hand.isEmpty()) {
+            return "Dealer has no cards.";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Card card : hand) {
+            sb.append(card.toString()).append(", ");
+        }
+        return sb.toString().replaceAll(", $", ""); // Remove trailing comma
     }
 }

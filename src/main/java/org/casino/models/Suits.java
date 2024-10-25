@@ -3,26 +3,54 @@ package org.casino.models;
 import lombok.Getter;
 
 /**
- * Contains the suits of a Card, Names
+ * Enum representing the suits of a card in a standard deck.
+ * Each suit has a name and color associated with it.
  */
 @Getter
 public enum Suits {
-    CLUB("Clubs"),
-    DIAMOND("Diamonds"),
-    HEART("Hearts"),
-    SPADE("Spades");
+    CLUB("Clubs", "Black"),
+    DIAMOND("Diamonds", "Red"),
+    HEART("Hearts", "Red"),
+    SPADE("Spades", "Black");
 
-    // Getter for suit name
+    // Attributes
     private final String suitName;
+    /**
+     * -- GETTER --
+     *  Get the color of the suit.
+     *
+     */
+    @Getter
+    private final String color;
 
-    // Constructor to initialize the suit name
-    Suits(String suitName) {
+    // Constructor to initialize the suit name and color
+    Suits(String suitName, String color) {
         this.suitName = suitName;
+        this.color = color;
     }
 
-    // Override toString to return suit name
+    /**
+     * Returns a friendly name of the suit.
+     * @return a string representing the suit name.
+     */
     @Override
     public String toString() {
         return suitName;
+    }
+
+    /**
+     * Checks if the suit is a red color suit.
+     * @return true if the suit is red (Hearts or Diamonds), otherwise false.
+     */
+    public boolean isRed() {
+        return "Red".equalsIgnoreCase(color);
+    }
+
+    /**
+     * Checks if the suit is a black color suit.
+     * @return true if the suit is black (Clubs or Spades), otherwise false.
+     */
+    public boolean isBlack() {
+        return "Black".equalsIgnoreCase(color);
     }
 }

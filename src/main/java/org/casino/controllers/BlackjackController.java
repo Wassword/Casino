@@ -14,65 +14,130 @@ import java.util.NoSuchElementException;
 @RequestMapping("/blackjack")
 public class BlackjackController {
 
-    private final BlackjackService blackjackService;
     private static final Logger logger = LoggerFactory.getLogger(BlackjackController.class);
+
+    private final BlackjackService blackjackService;
 
     @Autowired
     public BlackjackController(BlackjackService blackjackService) {
         this.blackjackService = blackjackService;
     }
 
-
+    /**
+     * Displays the initial game page.
+     *
+     * @return the game view.
+     */
     @GetMapping("")
     public String game() {
         return "game";
     }
-    // Start the game and return the initial game view
+
+    /**
+     * Starts a new Blackjack game and displays the initial state.
+     *
+     * @param model the model to hold game data.
+     * @return the game view with initial game status.
+     */
     @PostMapping("")
     public String startGame(Model model) {
         try {
-            logger.info("Starting a new game");
-            String gameStatus = blackjackService.startGame();  // Start the game
-            logger.info("Game started successfully");
+            logger.info("Starting a new Blackjack game.");
 
-            model.addAttribute("status", gameStatus);  // Add game status to the model
-            model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's hand
-            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());  // Add dealer's face-up card
+            String gameStatus = blackjackService.startGame();
+            logger.info("Game started successfully for user.");
 
-            return "game";  // Ensure 'game.html' exists in 'src/main/resources/templates/'
+            model.addAttribute("status", gameStatus);
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+
+            return "game";
         } catch (NoSuchElementException e) {
-            logger.error("Error in starting the game: " + e.getMessage());
-            model.addAttribute("errorMessage", "Error: " + e.getMessage());
-            return "error";  // You can show an error page with this message
+            logger.error("Error starting game: {}", e.getMessage());
+            model.addAttribute("errorMessage", "An error occurred while starting the game. Please try again.");
+            return "error";
+        } catch (Exception e) {
+            logger.error("Unexpected error starting game: {}", e.getMessage(), e);
+            model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            return "error";
         }
     }
 
-
-    // Player hits and returns the updated view
+    /**
+     * Handles the player "hit" action by adding a card to the player's hand.
+     *
+     * @param model the model to hold updated game data.
+     * @return the updated game view.
+     */
     @PostMapping("/hit")
     public String hit(Model model) {
-        String hitResult = blackjackService.playerHit();
-        model.addAttribute("status", hitResult);  // Add the updated game status to the model
-        model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's updated hand
-        model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());  // Add dealer's face-up card
-        return "game";  // Return the same view to display the updated game status
+        try {
+            String hitResult = blackjackService.playerHit();
+
+            model.addAttribute("status", hitResult);
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+
+            return "game";
+        } catch (IllegalStateException e) {
+            logger.error("Error during hit action: {}", e.getMessage());
+            model.addAttribute("errorMessage", "You cannot hit. The game may be over.");
+            return "error";
+        } catch (Exception e) {
+            logger.error("Unexpected error during hit action: {}", e.getMessage(), e);
+            model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            return "error";
+        }
     }
 
-    // Player stands and returns the final result view
+    /**
+     * Handles the player "stand" action, concluding the game.
+     *
+     * @param model the model to hold final game data.
+     * @return the result view with the final game outcome.
+     */
     @PostMapping("/stand")
     public String stand(Model model) {
-        String standResult = blackjackService.playerStand();
-        model.addAttribute("status", standResult);  // Add the final game result to the model
-        model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's final hand
-        model.addAttribute("dealerHand", blackjackService.getDealerFaceUpCard());  // Add dealer's final hand
-        return "result";  // Return the view for the final result
+        try {
+            String standResult = blackjackService.playerStand();
+
+            model.addAttribute("status", standResult);
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerHand", blackjackService.getDealerHand());
+
+            return "result";
+        } catch (IllegalStateException e) {
+            logger.error("Error during stand action: {}", e.getMessage());
+            model.addAttribute("errorMessage", "You cannot stand. The game may be over.");
+            return "error";
+        } catch (Exception e) {
+            logger.error("Unexpected error during stand action: {}", e.getMessage(), e);
+            model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            return "error";
+        }
     }
 
-    // Get current game status (optional)
+    /**
+     * Retrieves and displays the current game status.
+     *
+     * @param model the model to hold game status data.
+     * @return the current game view.
+     */
     @GetMapping("/status")
     public String getGameStatus(Model model) {
-        model.addAttribute("playerHand", blackjackService.getPlayerHand());  // Add player's hand to the model
-        model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());  // Add dealer's face-up card
-        return "game";  // Return the current game status view
+        try {
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+
+            return "game";
+        } catch (NoSuchElementException e) {
+            logger.error("Error retrieving game status: {}", e.getMessage());
+            model.addAttribute("errorMessage", "Game status is unavailable.");
+            return "error";
+        } catch (Exception e) {
+            logger.error("Unexpected error retrieving game status: {}", e.getMessage(), e);
+            model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            return "error";
+        }
     }
 }
