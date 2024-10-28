@@ -1,0 +1,26 @@
+version: 1
+backend:
+  phases:
+    preBuild:
+      commands:
+        - npm install -g @aws-amplify/cli
+        - amplify init --yes
+    build:
+      commands:
+        - amplify push --yes
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci # or `npm install` depending on your setup
+    build:
+      commands:
+        - npm run build # Make sure your build command is correct for the frontend
+  artifacts:
+    baseDirectory: /build # Update based on your frontend framework's build output
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+
