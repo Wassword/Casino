@@ -10,19 +10,6 @@
 <div class="container">
     <h1>Blackjack</h1>
 
-    <!-- Display current game status -->
-    <p th:text="${status}"></p>
-
-    <!-- Display player balance -->
-    <p>Current Balance: $<span th:text="${balance}"></span></p>
-
-    <!-- Bet Amount Form -->
-    <form method="post" action="/blackjack/place-bet">
-        <label for="betAmount">Enter your bet amount:</label>
-        <input type="number" id="betAmount" name="betAmount" min="5" step="5" required>
-        <button type="submit" class="btn btn-primary">Place Bet</button>
-    </form>
-
     <!-- Display game status -->
     <p th:text="${status}"></p>
 
@@ -32,7 +19,7 @@
         <li th:if="${dealerHand == null}">
             <!-- Display the dealer's face-up and face-down cards if the game is ongoing -->
             <span th:text="${dealerFaceUpCard}">Face-up card</span>
-            <span th:text="${dealerFaceDownCard}">Hidden</span>
+            <span th:text="Hidden">Hidden</span>
         </li>
         <li th:if="${dealerHand != null}" th:each="card : ${dealerHand}" th:text="${card}">
             <!-- Reveals the dealer's full hand when the game is over -->
@@ -51,12 +38,6 @@
         </form>
         <form method="post" action="/blackjack/stand">
             <button type="submit" class="btn btn-warning">Stand</button>
-        </form>
-
-    <!-- New Game Button, shown only after game ends -->
-
-        <form method="post" action="/blackjack/start">
-            <button type="submit" class="btn btn-success">Start New Game</button>
         </form>
 </div>
 </body>

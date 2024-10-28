@@ -168,6 +168,17 @@ public class BlackjackController {
             return "error";
         }
     }
+    @GetMapping("/bet")
+    public String showBetPage(Model model) {
+        String username = getLoggedInUsername();
+        User user = userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        model.addAttribute("user", user);  // Pass the user to show balance
+        model.addAttribute("status", null);  // Clear any previous status messages
+        return "bet";  // Render bet.html
+    }
+
+    // Handle placing a bet
     @PostMapping("/place-bet")
     public String placeBet(@RequestParam("betAmount") int betAmount, Model model) {
         String username = getLoggedInUsername();
@@ -175,18 +186,23 @@ public class BlackjackController {
 
         try {
             blackjackService.setUser(user);
-            blackjackService.placeBet(betAmount);  // Pass the bet amount to the service
-            model.addAttribute("status", "Bet of $" + betAmount + " placed successfully.");
-            model.addAttribute("balance", blackjackService.getBalance());
+            blackjackService.placeBet(betAmount);  // Place the bet in the service
+
+            // Start the game immediately after placing the bet
+            String gameStatus = blackjackService.startGame();
+            model.addAttribute("status", gameStatus);
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+            model.addAttribute("gameStarted", true);  // Indicate that the game has started
+
+            return "game";  // Redirect to game.html with game status
         } catch (IllegalArgumentException e) {
-            model.addAttribute("status", e.getMessage());  // Handle invalid bet amounts
+            model.addAttribute("status", e.getMessage());  // Display error message
+            model.addAttribute("user", user);  // Keep user info to show balance
+            return "bet";  // Reload bet.html with error
         }
-
-        model.addAttribute("playerHand", blackjackService.getPlayerHand());
-        model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
-
-        return "game";
     }
+
 
     public String getLoggedInUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
