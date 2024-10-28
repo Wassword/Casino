@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -85,11 +87,11 @@ public class BlackjackService {
      * Retrieves the player's current hand as a formatted string.
      * @return a string representing the player's hand.
      */
-    public String getPlayerHand() {
+    public List<String> getPlayerHand() {
         if (user.getHand().isEmpty()) {
             throw new NoSuchElementException("Player's hand is empty");
         }
-        return user.showHand();
+        return user.getHand().stream().map(Card::getImagePath).collect(Collectors.toList());
     }
 
     /**
@@ -100,7 +102,7 @@ public class BlackjackService {
         if (dealer.getHand().isEmpty()) {
             throw new NoSuchElementException("Dealer has no cards to show");
         }
-        return dealer.getHand().getFirst().toString();  // Show first card
+        return dealer.getHand().getFirst().getImagePath();  // Get image path for the first card
     }
 
     // --- Private Methods for Better Code Structure ---
@@ -221,10 +223,12 @@ public class BlackjackService {
         userRepository.save(user);  // Save the updated balance in the database
 
         System.out.println("Bet placed: " + betAmount + ". Current balance: " + user.getBalance());
-    };
+    }
     public int getBalance(){
         return user.getBalance();
     }
+
+
 
 
 

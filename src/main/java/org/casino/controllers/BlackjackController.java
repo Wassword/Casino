@@ -60,10 +60,10 @@ public class BlackjackController {
             logger.info("Game started successfully for user.");
 
             model.addAttribute("status", gameStatus);
-            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("playerHandImages", blackjackService.getPlayerHand());
             model.addAttribute("dealerHand", blackjackService.getDealerHand());
             model.addAttribute("dealerFaceDownCard", blackjackService.getDealerFaceDownCard());
-            model.addAttribute("dealerFaceUpCard", blackjackService.getDealerFaceUpCard());
+            model.addAttribute("dealerCardImage", blackjackService.getDealerFaceUpCard());
 
 
 

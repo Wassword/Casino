@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blackjack Game</title>
+    <title>GGC 21 or Bust!</title>
+
+    <link rel="icon" type="image/png" th:href="@{/images/grin.png}">
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <div class="container">
-    <h1>Blackjack</h1>
+    <h1>21 or BUST!</h1>
 
     <!-- Display game status -->
     <p th:text="${status}"></p>
@@ -18,7 +21,9 @@
     <ul>
         <li th:if="${dealerHand == null}">
             <!-- Display the dealer's face-up and face-down cards if the game is ongoing -->
-            <span th:text="${dealerFaceUpCard}">Face-up card</span>
+            <div th:each="card : ${dealerHand}">
+                <img th:src="${card}" alt="Dealer Card" class="card-image">
+            </div>
             <span th:text="Hidden">Hidden</span>
         </li>
         <li th:if="${dealerHand != null}" th:each="card : ${dealerHand}" th:text="${card}">
@@ -29,7 +34,10 @@
     <!-- Player's Hand -->
     <h2>Your Hand</h2>
     <ul>
-        <li th:each="card : ${playerHand}" th:text="${card}"></li>
+        <div th:each="card : ${playerHandImages}">
+            <img th:src="${card}" alt="Player Card" class="card-image">
+        </div>
+
     </ul>
 
     <!-- Player Actions -->

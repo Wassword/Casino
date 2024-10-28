@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Home</title>
+    <title>Golden Grin</title>
+
+    <link rel="icon" type="image/png" th:href="@{/images/grin.png}">
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 
 </head>
@@ -19,11 +22,11 @@
 
 <!-- Main content container -->
 <div class="container">
-    <h1 th:text="${welcomeMessage}">Welcome to the Casino!</h1>
-    <p>Click the button below to start playing or log in/register to manage your account.</p>
+    <h1 th:text="${welcomeMessage}">Welcome to the GoldenGrin Casino!</h1>
+    <p>Click the button below to start playing.</p>
 
     <!-- Play Blackjack Button -->
-    <a href="/blackjack/bet" class="btn btn-primary">Play Blackjack</a>
+    <a href="/blackjack/bet" class="btn btn-primary">Play 21 or BUST!</a>
 </div>
 </body>
 </html>

@@ -47,4 +47,8 @@ public record Card(Suits suit, Values value) {
     public boolean isAce() {
         return value == Values.ACE;
     }
+    public String getImagePath() {
+        return "/images/Playing Cards/PNG-cards-1.3._" + value.toString().toLowerCase() + "_of_" + suit.toString().toLowerCase() + ".png";
+    }
+
 }

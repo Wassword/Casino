@@ -27,7 +27,7 @@ public class HomeController {
      */
     @GetMapping("/")
     public String home(Model model) {
-        String welcomeMessage = "Welcome to the Casino!";
+        String welcomeMessage = "Welcome to the Golden Grin Casino!";
         model.addAttribute("welcomeMessage", welcomeMessage);
         logger.info("Home page accessed with welcome message: {}", welcomeMessage);
         return "index";
