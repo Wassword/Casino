@@ -1,57 +1,78 @@
 package org.casino.models;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Component
 public class Deck {
-    private final ArrayList<Card> cards;
+    private final List<Card> cards;
 
+    // Constructor to initialize and populate the deck with all cards
     public Deck() {
-        cards = new ArrayList<>();
-        // Go through all the suits
+        this.cards = new ArrayList<>();
+        initializeDeck();
+    }
+
+    // Initialize the deck with a full set of cards
+    private void initializeDeck() {
         for (Suits suit : Suits.values()) {
-            // Go through all values (ranks)
             for (Values value : Values.values()) {
-                // Add a new card containing each iteration's suit and rank
                 cards.add(new Card(suit, value));
             }
         }
     }
 
+    // Shuffle the deck to randomize card order
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
+    // Deal a card from the deck
     public Card dealCard() {
-        // Check if the deck is empty before dealing
         if (cards.isEmpty()) {
             throw new IllegalStateException("The deck is empty, no more cards to deal.");
         }
-        return cards.removeFirst(); // Consider using remove(cards.size() - 1) to deal from the end
+        return cards.removeLast(); // Deal from the end of the list for improved performance
     }
 
+    // Get the number of remaining cards in the deck
     public int getRemainingCards() {
         return cards.size();
     }
 
-    // Optional: Reset the deck if needed
+    // Reset the deck by clearing, re-initializing, and shuffling
     public void resetDeck() {
         cards.clear();
-        for (Suits suit : Suits.values()) {
-            for (Values value : Values.values()) {
-                cards.add(new Card(suit, value));
-            }
-        }
+        initializeDeck();
         shuffle();
+    }
+
+    // Peek at the top card without removing it
+    public Card peekTopCard() {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("The deck is empty.");
+        }
+        return cards.getLast();
+    }
+
+    // Check if the deck is empty
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    // Display the entire deck (useful for debugging)
+    public String showDeck() {
+        StringBuilder sb = new StringBuilder();
+        for (Card card : cards) {
+            sb.append(card.toString()).append("\n");
+        }
+        return sb.toString();
     }
 }

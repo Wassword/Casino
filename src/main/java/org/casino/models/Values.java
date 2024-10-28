@@ -8,10 +8,45 @@ public enum Values {
     SEVEN(7), EIGHT(8), NINE(9), TEN(10),
     JACK(10), QUEEN(10), KING(10), ACE(11);
 
-    private final int value;  // Marked final to ensure immutability
+    /**
+     * -- GETTER --
+     *  Returns the card's default Blackjack value.
+     *  For ACE, the value defaults to 11 but can be adjusted in game logic.
+     *
+     */
+    private final int blackjackValue; // Blackjack point value for each card
 
-    Values(int value) {
-        this.value = value;
+    // Constructor to initialize the card value
+    Values(int blackjackValue) {
+        this.blackjackValue = blackjackValue;
     }
 
+    /**
+     * Checks if the card is a face card (Jack, Queen, or King).
+     *
+     * @return true if the card is a face card, otherwise false.
+     */
+    public boolean isFaceCard() {
+        return this == JACK || this == QUEEN || this == KING;
+    }
+
+    /**
+     * Checks if the card is an Ace.
+     *
+     * @return true if the card is an Ace, otherwise false.
+     */
+    public boolean isAce() {
+        return this == ACE;
+    }
+
+    /**
+     * Returns the display name of the card value (e.g., "Ace" instead of "ACE").
+     *
+     * @return A string representing the display name of the value.
+     */
+    @Override
+    public String toString() {
+        String name = name();
+        return name.charAt(0) + name.substring(1).toLowerCase();  // Capitalizes first letter only
+    }
 }
