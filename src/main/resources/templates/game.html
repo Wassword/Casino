@@ -10,6 +10,19 @@
 <div class="container">
     <h1>Blackjack</h1>
 
+    <!-- Display current game status -->
+    <p th:text="${status}"></p>
+
+    <!-- Display player balance -->
+    <p>Current Balance: $<span th:text="${balance}"></span></p>
+
+    <!-- Bet Amount Form -->
+    <form method="post" action="/blackjack/place-bet">
+        <label for="betAmount">Enter your bet amount:</label>
+        <input type="number" id="betAmount" name="betAmount" min="5" step="5" required>
+        <button type="submit" class="btn btn-primary">Place Bet</button>
+    </form>
+
     <!-- Display game status -->
     <p th:text="${status}"></p>
 

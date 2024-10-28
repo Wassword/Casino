@@ -1,7 +1,6 @@
 package org.casino.service;
 
 import lombok.*;
-import org.casino.config.AppProperties;
 import org.casino.models.*;
 import org.casino.models.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import java.util.NoSuchElementException;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Service
 public class BlackjackService {
@@ -21,24 +19,26 @@ public class BlackjackService {
     private static final Logger logger = LoggerFactory.getLogger(BlackjackService.class);
 
     private final UserRepository userRepository;
-    private final User user;
+    @Setter
+    private User user;
     private final Dealer dealer;
     private final Deck deck;
     private boolean gameOver;
 
     @Autowired
-    public BlackjackService(UserRepository userRepository, Dealer dealer, Deck deck, AppProperties appProperties) {
+    public BlackjackService(UserRepository userRepository, User user, Dealer dealer, Deck deck) {
         this.userRepository = userRepository;
-        this.user = new User(appProperties.getDefaultUsername(), appProperties.getDefaultPassword(), appProperties.getDefaultBalance());
+        this.user = user;
         this.dealer = dealer;
         this.deck = deck;
         this.gameOver = false;
     }
 
-    /**
-     * Starts a new Blackjack game by resetting the game state and dealing initial cards.
-     * @return a status message indicating the game has started.
-     */
+
+        /**
+         * Starts a new Blackjack game by resetting the game state and dealing initial cards.
+         * @return a status message indicating the game has started.
+         */
     public String startGame() {
         logger.info("Starting new game for user: {}", user.getUsername());
         resetGame();
@@ -111,7 +111,7 @@ public class BlackjackService {
     private void resetGame() {
         user.clearHand();
         dealer.clearHand();
-        deck.shuffle();
+        deck.resetDeck();
         gameOver = false;
         logger.info("Game reset and deck shuffled.");
     }
@@ -207,4 +207,25 @@ public class BlackjackService {
     public Object calculateHandValue() {
         return user.calculateHandValue();
     }
+    public boolean canPlaceBet(int betAmount) {
+        return user.canPlaceBet(betAmount);
+    }
+    public void placeBet(int betAmount) {
+        if (betAmount <= 0 || betAmount > user.getBalance() || betAmount % 5 != 0) {
+            throw new IllegalArgumentException("Invalid bet amount. It must be a multiple of 5 and less than or equal to your current balance.");
+        }
+
+        // Deduct the bet amount from the user's balance
+        user.setCurrentBet(betAmount);
+        user.setBalance(user.getBalance() - betAmount);
+        userRepository.save(user);  // Save the updated balance in the database
+
+        System.out.println("Bet placed: " + betAmount + ". Current balance: " + user.getBalance());
+    };
+    public int getBalance(){
+        return user.getBalance();
+    }
+
+
+
 }

@@ -1,7 +1,11 @@
 package org.casino.controllers;
 
+import org.casino.models.User;
+import org.casino.service.UserService;
 import org.casino.service.BlackjackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +17,9 @@ import java.util.NoSuchElementException;
 @Controller
 @RequestMapping("/blackjack")
 public class BlackjackController {
+
+    @Autowired
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackController.class);
 
@@ -42,6 +49,10 @@ public class BlackjackController {
      */
     @PostMapping("/start")
     public String startGame(Model model) {
+        String username = getLoggedInUsername();
+        User user = userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        blackjackService.setUser(user);
         try {
             logger.info("Starting a new Blackjack game.");
 
@@ -157,4 +168,33 @@ public class BlackjackController {
             return "error";
         }
     }
+    @PostMapping("/place-bet")
+    public String placeBet(@RequestParam("betAmount") int betAmount, Model model) {
+        String username = getLoggedInUsername();
+        User user = userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        try {
+            blackjackService.setUser(user);
+            blackjackService.placeBet(betAmount);  // Pass the bet amount to the service
+            model.addAttribute("status", "Bet of $" + betAmount + " placed successfully.");
+            model.addAttribute("balance", blackjackService.getBalance());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("status", e.getMessage());  // Handle invalid bet amounts
+        }
+
+        model.addAttribute("playerHand", blackjackService.getPlayerHand());
+        model.addAttribute("dealerCard", blackjackService.getDealerFaceUpCard());
+
+        return "game";
+    }
+
+    public String getLoggedInUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+
 }

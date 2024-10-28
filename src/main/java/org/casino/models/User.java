@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@Component
 public class User {
 
     @Id
@@ -39,32 +41,18 @@ public class User {
     @Column(nullable = false, columnDefinition = "integer default 100")
     private int balance = 100;  // Player balance (default: 100)
 
-    @Column(nullable = false, columnDefinition = "integer default 100")
-    private int currentBet = 100;  // Player current bet (default: 100)
+    @Column(nullable = false)
+    private int currentBet;  // Player current bet (default: 100)
 
     // Constructor with username, password, and initial balance
-    public User(String username, String password, int initialPlayerBalance) {
+    public User(String username, String password, int balance) {
         this.username = username;
         this.password = password;
         this.enabled = true;
-        this.balance = initialPlayerBalance;
+        this.balance = balance;
     }
 
     // --- Game-Specific Methods ---
-
-    /**
-     * Places a bet, deducting the amount from the balance if it's valid.
-     *
-     * @param betAmount The amount to bet.
-     * @throws IllegalArgumentException if betAmount is invalid.
-     */
-    public void placeBet(int betAmount) {
-        if (betAmount <= 0 || betAmount > balance || betAmount % 5 != 0) {
-            throw new IllegalArgumentException("Invalid bet amount. Bets must be within balance and in increments of 5.");
-        }
-        currentBet = betAmount;
-        balance -= currentBet;
-    }
 
     /**
      * Calculates the total points in the player's hand.
