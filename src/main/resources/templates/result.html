@@ -24,7 +24,9 @@
     <div class="mb-3">
         <h3>Dealer's Hand</h3>
         <ul class="list-group">
-            <li th:each="card : ${dealerHand}" th:text="${card}" class="list-group-item"></li>
+            <div th:each="card : ${dealerHand}">
+                <img th:src="${card}" alt="Dealers Cards" class="card-image">
+            </div>
         </ul>
     </div>
 
@@ -32,7 +34,12 @@
     <div class="mb-3">
         <h3>Your Hand</h3>
         <ul class="list-group">
-            <li th:each="card : ${playerHand}" th:text="${card}" class="list-group-item"></li>
+            <div id="playerHandImages">
+                <!-- This container will be dynamically updated by JavaScript -->
+                <div th:each="card : ${playerHand}">
+                    <img th:src="${card}" alt="Player Card" class="card-image">
+                </div>
+            </div>
         </ul>
         <p>Total: <strong th:text="${playerTotal}"></strong></p>
     </div>

@@ -142,7 +142,7 @@ public class User {
     /**
      * Displays the player's hand as a string (useful for debugging or display).
      *
-     * @return A formatted string of the player's hand.
+     * @return ACE formatted string of the player's hand.
      */
     public String showHand() {
         StringBuilder sb = new StringBuilder("Hand: ");

@@ -23,10 +23,21 @@ public record Card(Suits suit, Values value) {
         };
     }
 
-    // Override toString for a more readable representation
-    @Override
-    public String toString() {
-        return value + " of " + suit;
+
+        @Override
+        public String toString() {
+        String[] words = this.value.toString().split(" ");
+        StringBuilder capitalizedValue = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                capitalizedValue.append(word.substring(0, 1).toUpperCase())
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+
+        return capitalizedValue.toString().trim();
     }
 
     // Override equals to compare cards based on suit and value
@@ -48,11 +59,10 @@ public record Card(Suits suit, Values value) {
         return value == Values.ACE;
     }
     public String getImagePath() {
-        // Generates a path for each card image based on its value and suit
-        return "/images/Playing Cards/PNG-cards-1.3/._"
-                + value.toString().toLowerCase()
-                + "_of_"
-                + suit.toString().toLowerCase()
+        // Generates a path for each card image based on its suit and value
+        return "/images/Playing-Cards/"
+                + suit.toString() + "_"
+                + value.getAbbreviation()
                 + ".png";
     }
 

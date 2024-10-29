@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -49,7 +50,7 @@ public class BlackjackControllerTest {
         when(userService.findByUsername("testUser")).thenReturn(Optional.of(mockUser));
 
         // Return a String representing the player's hand
-        when(blackjackService.getPlayerHand()).thenReturn("Ace, King");
+        when(blackjackService.getPlayerHand()).thenReturn(Collections.singletonList("Ace, King"));
 
         mockMvc.perform(post("/blackjack/start"))
                 .andExpect(status().isOk())
