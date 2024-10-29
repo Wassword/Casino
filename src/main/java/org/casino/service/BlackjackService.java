@@ -22,12 +22,9 @@ public class BlackjackService {
     @Autowired
     private AppProperties appProperties;
     public void configureGame() {
-        String frontendUrl = appProperties.getFrontendUrl();
-        int port = appProperties.getPort();
 
-        // Game setup logic using environment variables
-        System.out.println("Game frontend is running on: " + frontendUrl + ":" + port);
-    }
+
+       }
 
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackService.class);

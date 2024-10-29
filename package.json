@@ -20,6 +20,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "aws-amplify": "^6.6.7"
+    "aws-amplify": "^6.6.7",
+    "pg": "^8.13.1"
   }
 }

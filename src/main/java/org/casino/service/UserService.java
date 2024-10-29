@@ -17,13 +17,7 @@ public class UserService {
     @Autowired
     private AppProperties appProperties;
     public void getVariables(){
-        String backendApiUrl = appProperties.getBackendApiUrl();
-        String databaseUrl = appProperties.getDatabaseUrl();
-        String accessKeyId = appProperties.getAccessKeyId();
-        // Use these variables in your logic
-        System.out.println("Backend API URL: " + backendApiUrl);
-        System.out.println("Database URL: " + databaseUrl);
-        System.out.println("Access Key ID: " + accessKeyId);
+
 
 
     }
