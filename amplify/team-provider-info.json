@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-casino-dev-ed001-authRole",
+      "UnauthRoleArn": "arn:aws:iam::430118825812:role/amplify-casino-dev-ed001-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::430118825812:role/amplify-casino-dev-ed001-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-casino-dev-ed001-deployment",
+      "UnauthRoleName": "amplify-casino-dev-ed001-unauthRole",
+      "StackName": "amplify-casino-dev-ed001",
+      "StackId": "arn:aws:cloudformation:us-east-1:430118825812:stack/amplify-casino-dev-ed001/6027e790-958d-11ef-9b02-1249806a2401",
+      "AmplifyAppId": "d28z90c5h4iky2"
+    }
+  }
+}
