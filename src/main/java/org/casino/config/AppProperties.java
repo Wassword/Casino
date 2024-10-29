@@ -16,11 +16,5 @@ public class AppProperties {
     private String defaultPassword;
     private int defaultBalance;
 
-    // New environment variables
-    private String backendApiUrl;
-    private String databaseDriver;
-    private String databaseUrl;
-    private String frontendUrl;
-    private int port;
-    private String sqliteDbPath;
+
 }
