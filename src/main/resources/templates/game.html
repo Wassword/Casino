@@ -79,7 +79,49 @@
         <form method="post" action="/blackjack/stand" style="display: inline;">
             <button id="standButton" type="submit" class="btn btn-warning">Stand</button>
         </form>
+        <button id="doubleDownButton" class="btn btn-success" onclick="doubleDown()">Double Down</button>
     </div>
 </div>
+
+<script>
+    // JavaScript function for double down action
+    function doubleDown() {
+        fetch('/blackjack/double-down', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('statusMessage').innerText = data.status;
+
+                // Update player and dealer hands in the UI
+                const playerHand = document.getElementById('playerHand');
+                playerHand.innerHTML = '';
+                data.playerHandImages.forEach(card => {
+                    const cardElement = document.createElement('img');
+                    cardElement.src = card;
+                    cardElement.className = 'card-image';
+                    playerHand.appendChild(cardElement);
+                });
+                //
+                // const dealerHand = document.getElementById('dealerHand');
+                // dealerHand.innerHTML = '';
+                // const dealerCardElement = document.createElement('img');
+                // dealerCardElement.src = data.dealerFaceUpCard;
+                // dealerCardElement.className = 'card-image';
+                // dealerHand.appendChild(dealerCardElement);
+
+                if (data.gameOver) {
+                    window.location.href = 'blackjack/results';
+                }
+            })
+            .catch(error => {
+                console.error('Error with double down:', error);
+                document.getElementById('statusMessage').innerText = 'An error occurred. Please try again.';
+            });
+    }
+</script>
 </body>
 </html>

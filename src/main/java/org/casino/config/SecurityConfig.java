@@ -29,13 +29,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
 
-                                .requestMatchers("/**","/css/**","/blackjack/**","/login","/register", "/images/**").permitAll() // Public pages
+                                .requestMatchers("/","/css/**","/blackjack/**","/login","/register", "/images/**").permitAll() // Public pages
                                 .anyRequest().authenticated() // Ensure other requests are authenticated
                 )
                 .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")
                                 .permitAll()
+                                .defaultSuccessUrl("/", true) // Redirect to home page on successful login
                 )
                 .logout(logout ->
                         logout

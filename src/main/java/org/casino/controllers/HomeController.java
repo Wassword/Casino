@@ -61,10 +61,13 @@ public class HomeController {
         } catch (IllegalStateException e) {
             logger.error("Error during stand action: {}", e.getMessage());
             model.addAttribute("errorMessage", "You cannot stand. The game may be over.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";
         } catch (Exception e) {
             logger.error("Unexpected error during stand action: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            model.addAttribute("exceptionMessage", e.getMessage());
             return "error";
         }
     }
@@ -85,10 +88,14 @@ public class HomeController {
         } catch (NoSuchElementException e) {
             logger.error("Error retrieving game status: {}", e.getMessage());
             model.addAttribute("errorMessage", "Game status is unavailable.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";
         } catch (Exception e) {
             logger.error("Unexpected error retrieving game status: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";
         }
     }
@@ -141,6 +148,8 @@ public class HomeController {
             return "bet";  // Return "bet.html" to display the error message and balance
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Unexpected error occurred. Please contact support.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";  // Return an error page in case of unexpected errors
         }
     }
@@ -158,10 +167,14 @@ public class HomeController {
         } catch (IllegalStateException e) {
             logger.error("Error during stand action: {}", e.getMessage());
             model.addAttribute("errorMessage", "You cannot stand. The game may be over.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";
         } catch (Exception e) {
             logger.error("Unexpected error during stand action: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
+            model.addAttribute("exceptionMessage", e.getMessage());
+
             return "error";
         }
     }
