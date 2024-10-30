@@ -1,41 +1,103 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Blackjack Leaderboard</title>
-
-    <link rel="icon" type="image/png" th:href="@{/images/grin.png}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-
 </head>
 <body>
-<h1>Blackjack Leaderboard</h1>
+<div class="container">
+    <h1>Leaderboard</h1>
 
-<table>
-    <thead>
-    <tr>
-        <th>Rank</th>
-        <th>Player Name</th>
-        <th>Wins</th>
-        <th>Losses</th>
-        <th>Total Games</th>
-        <th>Winning Percentage</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="player, stat : ${leaderboard}">
-        <td th:text="${stat.index + 1}"></td> <!-- Rank -->
-        <td th:text="${player.name}"></td> <!-- Player Name -->
-        <td th:text="${player.wins}"></td> <!-- Wins -->
-        <td th:text="${player.losses}"></td> <!-- Losses -->
-        <td th:text="${player.totalGames}"></td> <!-- Total Games -->
-        <td th:text="${#numbers.formatDecimal(player.winPercentage, 2, 2)} + '%'"></td> <!-- Winning Percentage -->
-    </tr>
-    </tbody>
-</table>
+    <!-- Toggle Buttons -->
+    <div class="button-group">
+        <button id="winsLeaderboardButton" class="btn btn-primary">Sort by Wins</button>
+        <button id="balanceLeaderboardButton" class="btn btn-secondary">Sort by Balance</button>
+    </div>
 
-<div>
-    <a href="/" class="btn btn-primary">Back to Home</a>
+    <!-- Leaderboard Table -->
+    <table class="table table-striped" id="leaderboardTable">
+        <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Total Wins</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+        <!-- Rows will be dynamically populated here -->
+        </tbody>
+    </table>
 </div>
+
+<script>
+    // Function to refresh leaderboard by wins
+    async function refreshLeaderboardByWins() {
+        try {
+            const response = await fetch('/leaderboard/update-wins', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                populateLeaderboard(data.users);
+            } else {
+                console.error('Failed to update leaderboard by wins');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Function to refresh leaderboard by balance
+    async function refreshLeaderboardByBalance() {
+        try {
+            const response = await fetch('/leaderboard/update-balance', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                populateLeaderboard(data.users);
+            } else {
+                console.error('Failed to update leaderboard by balance');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Function to populate leaderboard table
+    function populateLeaderboard(users) {
+        const leaderboardBody = document.getElementById('leaderboardBody');
+        leaderboardBody.innerHTML = '';  // Clear existing rows
+
+        users.forEach((user, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${user.username}</td>
+            <td>${user.totalWins}</td>
+            <td>${user.balance}</td>
+        `;
+            leaderboardBody.appendChild(row);
+        });
+    }
+
+    // Event listeners for the buttons
+    document.getElementById('winsLeaderboardButton').addEventListener('click', refreshLeaderboardByWins);
+    document.getElementById('balanceLeaderboardButton').addEventListener('click', refreshLeaderboardByBalance);
+
+    // Initial load by wins
+    refreshLeaderboardByWins();
+</script>
 </body>
 </html>

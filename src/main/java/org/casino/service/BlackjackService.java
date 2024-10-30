@@ -96,6 +96,12 @@ public class BlackjackService {
         }
         return user.getHand().stream().map(Card::getImagePath).collect(Collectors.toList());
     }
+    public String getPlayerHandS() {
+        if (user.getHand().isEmpty()) {
+            throw new NoSuchElementException("Player's hand is empty");
+        }
+        return user.getHand().toString().strip().trim();
+    }
 
     /**
      * Retrieves the dealer's face-up card (first card dealt).
@@ -136,7 +142,7 @@ public class BlackjackService {
 
     private String handleBust() {
         logger.info("Player busted with hand: {}", getPlayerHand());
-        return String.format("You busted! Final hand: %s", getPlayerHand());
+        return String.format("You busted! Final hand: %s", getPlayerHandS());
     }
 
     private String handleGameOutcome() {
@@ -151,6 +157,8 @@ public class BlackjackService {
             return handlePlayerWin("You win!");
         } else if (dealerPoints > playerPoints) {
             return handleDealerWin();
+        } else if (dealerPoints == 21) {
+            return handleDealerWin();
         } else {
             return "It's a tie!";
         }
@@ -161,11 +169,12 @@ public class BlackjackService {
         user.setTotalWins(user.getTotalWins() + 1);
         userRepository.save(user);
         logger.info("Player won the game. Updated balance: {}", user.getBalance());
-        return String.format("%s Your hand: %s (Total Points: %d)", message, getPlayerHand(), user.calculateHandValue());
+        return String.format("%s Your hand: %s (Total Points: %d)", message, getPlayerHandS(), user.calculateHandValue());
     }
 
     private String handleDealerWin() {
         logger.info("Dealer won the game. Dealer hand: {}", dealer.showHand());
+        
         return String.format("Dealer wins. Dealer hand: %s (Total Points: %d)", dealer.showHand(), dealer.calculateHandValue());
     }
 

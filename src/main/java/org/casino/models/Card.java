@@ -24,20 +24,9 @@ public record Card(Suits suit, Values value) {
     }
 
 
-        @Override
-        public String toString() {
-        String[] words = this.value.toString().split(" ");
-        StringBuilder capitalizedValue = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                capitalizedValue.append(word.substring(0, 1).toUpperCase())
-                        .append(word.substring(1).toLowerCase())
-                        .append(" ");
-            }
-        }
-
-        return capitalizedValue.toString().trim();
+    @Override
+    public String toString() {
+        return value.toString() + " of " + suit.toString();
     }
 
     // Override equals to compare cards based on suit and value

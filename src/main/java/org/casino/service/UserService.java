@@ -56,10 +56,10 @@ public class UserService {
      *
      * @return a list of the top 10 users by total wins.
      */
-    public List<User> getTopPlayers() {
-        logger.debug("Retrieving top 10 players by total wins.");
-        return userRepository.findTop10ByOrderByTotalWinsDesc();
+    public List<User> getUsersOrderedByChips() {
+        return userRepository.findAllByOrderByBalanceDesc();
     }
+
 
     /**
      * Updates the game status and balance of the user after a game round.
@@ -128,5 +128,9 @@ public class UserService {
         user.setBalance(defaultBalance);
         userRepository.save(user);
         logger.info("User {}'s balance reset to {}", user.getUsername(), defaultBalance);
+    }
+
+    public List<User> getUsersOrderedByWins() {
+        return userRepository.findAllUsersByOrderByTotalWinsDesc();
     }
 }

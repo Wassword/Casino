@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -41,25 +42,7 @@ public class HomeController {
         return "index";
     }
 
-    /**
-     * Displays the leaderboard page with the top players.
-     *
-     * @param model the model to pass the top players to the view.
-     * @return the name of the Thymeleaf template for the leaderboard.
-     */
-    @GetMapping("/blackjack/leaderboard")
-    public String leaderboard(Model model) {
-        try {
-            model.addAttribute("topPlayers", userService.getTopPlayers());
-            logger.info("Leaderboard accessed and top players fetched successfully.");
-            return "leaderboard";
-        } catch (Exception e) {
-            logger.error("Error fetching top players for leaderboard: {}", e.getMessage(), e);
-            model.addAttribute("errorMessage", "Unable to load the leaderboard. Please try again later.");
-            return "error";
-        }
 
-    }
     @PostMapping("blackjack/stand")
     public String stand(Model model) {
         try {
@@ -158,7 +141,7 @@ public class HomeController {
     }
 
     @GetMapping("blackjack/results")
-    public String getResults(Model model) {
+    public String getresults(Model model) {
         try {
             String standResult = blackjackService.playerStand();
 

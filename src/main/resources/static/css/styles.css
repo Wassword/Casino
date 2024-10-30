@@ -178,4 +178,8 @@ input[type="submit"]:hover {
     height: auto;
     margin: 10px;
 }
+.table {
+    width: 80%;
+    margin: 0 auto;
+}
 
