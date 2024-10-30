@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class BlackjackService {
 

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 //package org.casino.controllers;
 //
 //import org.casino.models.User;
@@ -58,3 +59,61 @@
 //                .andExpect(view().name("logout"));
 //    }
 //}
+=======
+package org.casino.controllers;
+
+import org.casino.models.User;
+import org.casino.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.ui.Model;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class UserControllerTest {
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private Model model;
+
+    @InjectMocks
+    private UserController userController;
+
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        user = new User();
+    }
+
+    @Test
+    void testShowRegistrationForm() {
+        String viewName = userController.showRegistrationForm(model);
+
+        assertEquals("register", viewName);
+        verify(model).addAttribute(eq("user"), any(User.class));
+    }
+
+    @Test
+    void testRegisterUser() {
+        String viewName = userController.registerUser(user);
+
+        assertEquals("redirect:/login?registered", viewName);
+        verify(userService).saveUser(user);
+    }
+
+    @Test
+    void testLogin() {
+        String viewName = userController.login();
+
+        assertEquals("login", viewName);
+    }
+}
+>>>>>>> Stashed changes

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 //package org.casino.controllers;
 //
 //import org.casino.models.User;
@@ -62,3 +63,52 @@
 //                .andExpect(model().attribute("errorMessage", "Unable to load the leaderboard. Please try again later."));
 //    }
 //}
+=======
+package org.casino.controllers;
+
+import org.casino.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.ui.Model;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class HomeControllerTest {
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private Model model;
+
+    @InjectMocks
+    private HomeController homeController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void testHome() {
+        String viewName = homeController.home(model);
+
+        assertEquals("index", viewName);
+        verify(model).addAttribute("welcomeMessage", "Welcome to the Golden Grin Casino!");
+    }
+
+    @Test
+    void testLeaderboard() {
+        when(userService.getTopPlayers()).thenReturn(null);
+
+        String viewName = homeController.leaderboard(model);
+
+        assertEquals("leaderboard", viewName);
+        verify(model).addAttribute("topPlayers", null);
+    }
+}
+>>>>>>> Stashed changes

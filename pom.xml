@@ -133,6 +133,7 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
+<<<<<<< Updated upstream
         <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -144,6 +145,8 @@
             <artifactId>javafx-media</artifactId>
             <version>21.0.2</version>
         </dependency>
+=======
+>>>>>>> Stashed changes
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -172,14 +175,25 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>22</source>
-                    <target>22</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
-                </configuration>
-            </plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version> <!-- Make sure this is the latest version -->
+            <configuration>
+                <source>22</source>
+                <target>22</target>
+                <compilerArgs>--enable-preview</compilerArgs>
+            </configuration>
+        </plugin>
+
+            <!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>22</source>-->
+<!--                    <target>22</target>-->
+<!--                    <compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
