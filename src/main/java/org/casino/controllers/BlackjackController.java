@@ -64,6 +64,22 @@ public class BlackjackController {
         }
     }
 
+    @PutMapping("/double-down")
+    public ResponseEntity<Map<String, Object>> doubleDown() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String doubleDownResult = blackjackService.playerDoubleDown();
 
+            response.put("status", doubleDownResult);
+            response.put("playerHandImages", blackjackService.getPlayerHand());
+            response.put("dealerFaceUpCard", blackjackService.getDealerFaceUpCard());
+            response.put("gameOver", doubleDownResult.contains("busted") || doubleDownResult.contains("win"));
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("errorMessage", "Unexpected error occurred. Please contact support.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }

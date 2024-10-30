@@ -58,7 +58,18 @@ public class BlackjackService {
         logger.info("Starting new game for user: {}", user.getUsername());
         resetGame();
         dealInitialCards();
-        return String.format("Game started for %s with a balance of %d", user.getUsername(), user.getBalance());
+        int playerPoints = user.calculateHandValue();
+        int dealerPoints = dealer.calculateHandValue();
+
+        if (playerPoints == 21){
+            gameOver = true;
+            return handleGameOutcome();
+        } else if (dealerPoints == 21){
+            gameOver = true;
+            return handleGameOutcome();
+        } else {
+            return String.format("Game started for %s with a balance of %d", user.getUsername(), user.getBalance());
+        }
     }
 
     /**
@@ -140,7 +151,10 @@ public class BlackjackService {
         dealer.addCardToHand(deck.dealCard());
         dealer.addCardToHand(deck.dealCard());
 
-        logger.info("Initial cards dealt. Player hand: {}, Dealer face-up card: {}", getPlayerHand(), getDealerFaceUpCard());
+
+
+
+        logger.info("Initial cards dealt. Player hand: {}, Dealer face-up card: {}", getPlayerHandS(), getDealerFaceUpCard());
     }
 
     private void playDealerTurn() {
@@ -163,11 +177,13 @@ public class BlackjackService {
 
         if (dealerPoints > 21) {
             return handlePlayerWin("Dealer busted!");
+        }else if(playerPoints == 21){
+            return handlePlayerWin("BLACKJACK!");
+        } else if (dealerPoints == 21) {
+            return handleDealerWin();
         } else if (playerPoints > dealerPoints) {
             return handlePlayerWin("You win!");
         } else if (dealerPoints > playerPoints) {
-            return handleDealerWin();
-        } else if (dealerPoints == 21) {
             return handleDealerWin();
         } else {
             return "It's a tie!";
@@ -227,4 +243,35 @@ public class BlackjackService {
             return principal.toString();
         }
     }
+    public String playerDoubleDown() {
+        if (gameOver) {
+            return "Game is already over.";
+        }
+
+        // Check if the user has enough balances to double down
+        if (!canDoubleDown()) {
+            return "Insufficient balance to double down.";
+        }
+
+        // Deduct double down amount and double the current bet
+        user.doubleDown();
+        user.addCardToHand(deck.dealCard());
+
+        int points = user.calculateHandValue();
+        String statusMessage = String.format("You doubled down. Your hand: %s (Total Points: %d)", getPlayerHandS(), points);
+
+        // If the player busts after doubling down
+        if (points > 21) {
+            gameOver = true;
+            return handleBust();
+        }
+
+        // Otherwise, end the player’s turn and move to dealer's turn
+        gameOver = false;
+        return statusMessage + "\n" + playerStand();
+    }
+    private boolean canDoubleDown() {
+        return user.getBalance() >= user.getCurrentBet();
+    }
+
 }

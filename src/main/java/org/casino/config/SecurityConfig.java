@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
 
-                                .requestMatchers("/","/css/**","/blackjack/**","/login","/register", "/images/**").permitAll() // Public pages
+                                .requestMatchers("/**","/css/**","/blackjack/**","/login","/register", "/images/**").permitAll() // Public pages
                                 .anyRequest().authenticated() // Ensure other requests are authenticated
                 )
                 .formLogin(formLogin ->
