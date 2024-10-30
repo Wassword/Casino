@@ -21,16 +21,52 @@ body {
     align-items: center;
     height: 100vh; /* Full viewport height */
 }
+/* Base style for the primary button */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-/* Container for the content */
+/* Hover effect */
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+/* Play 21 or BUST button inside the green table */
+.play-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    position: absolute;
+    bottom: 60px;  /* Move the button slightly upwards */
+    right: 50%;    /* Horizontally center it inside the circle */
+    transform: translateX(50%);
+}
+/* Leaderboard button on the bottom left, outside the green table */
+.leaderboard-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+}
+
+/* Styling for the circle container */
 .container {
-    background-color: #1a571a; /* Green to mimic a dealer's table */
-    border: 10px solid #000000; /* Brown border for a wooden look */
-    border-radius: 50%; /* Make it a perfect circle */
-    padding: 40px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
-    max-width: 600px;
-    max-height: 600px;
+    background-color: #1a571a;
+    border: 10px solid #000000;
+    border-radius: 50%;  /* Make it a circle */
+    padding: 80px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    max-width: 1000px;
+    max-height: 1000px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -38,27 +74,79 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    text-align: center; /* Center the text */
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
 }
+/* Style for the logo image with rounded corners */
+.logo-image {
+    max-width: 350px;
+    max-height: 350px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    transform: translateY(-70px); /* Move the image slightly upwards */
+}
+/* Increase font size for text */
+.container h1 {
+    font-size: 36px; /* Increase font size */
+    margin-top: 30px;
+    color: white;
+}
+
+.container p {
+    font-size: 25px; /* Adjust the font size for the paragraph */
+    margin-top: 10px;
+    color: white;
+}
+
+
+
+
 
 /* Styling for text */
 h1, h2, p, ul, li {
     color: white;
 }
-
 /* Container for the registration form */
 .loginbox, .loginerror, .registerbox {
     text-align: center;
-    padding: 20px;
-    border: 1px solid #ccc;
+    padding: 120px; /* Increase padding to make it more square */
+    border: 5px solid #ccc;
     border-radius: 10px;
     background-color: #400606;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    max-width: 1000px; /* Adjust the width to make it more square */
     width: 100%;
+    height: 70%;
     margin: 20px auto;
     color: white;
+}
+/* Adjust margin for the Login title */
+.loginbox h2 {
+    margin-bottom: 50px; /* Increase the space between the title and the rest of the form */
+}
 
+/* If necessary, adjust margin for the Username label */
+.loginbox label {
+    margin-top: 50px; /* Increase the space above the Username label */
+}
+
+/* Increase spacing between login box and the text below */
+.loginbox + p {
+    margin-top: -120px; /* Adjust this value to increase space */
+}
+
+/* Style for the "Don't have an account?" link */
+.loginbox a {
+    color: #ffffff; /* Adjust the color of the link */
+    text-decoration: none;
+    font-size: 45px;
+}
+
+.loginbox a:hover {
+    text-decoration: underline;
+    font-size: 45px;
 }
 
 h1 {
@@ -229,4 +317,28 @@ input[type="submit"]:hover {
 .navbar ul li a.active {
     border-bottom: 2px solid white;
 }
+/* Flex container for laying cards horizontally */
+.hand {
+    display: flex;   /* Use flexbox to align cards in a row */
+    justify-content: center; /* Centers the cards horizontally */
+    gap: 20px; /* Adds space between the cards */
+    margin: 20px 0; /* Adds space around the hand */
+}
+
+.hand img {
+    width: 80px; /* Set a fixed width for the cards */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 8px; /* Optional: Add rounded corners */
+}
+
+/* Style the action buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+
+
 

@@ -1,14 +1,11 @@
 package org.casino.controllers;
 
-import org.casino.models.User;
 import org.casino.service.UserService;
 import org.casino.service.BlackjackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +13,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/blackjack")
 public class BlackjackController {
-
-    private static final Logger logger = LoggerFactory.getLogger(BlackjackController.class);
 
     @Autowired
     private UserService userService;
@@ -43,7 +38,9 @@ public class BlackjackController {
             }
 
             String hitResult = blackjackService.playerHit();
+            String hand_status = blackjackService.getPlayerHandS();
             response.put("status", hitResult);
+            response.put("statusS", hand_status);
             response.put("playerHandImages", blackjackService.getPlayerHand());
             response.put("dealerFaceUpCard", blackjackService.getDealerFaceUpCard());
 
@@ -60,6 +57,8 @@ public class BlackjackController {
 
         } catch (Exception e) {
             response.put("errorMessage", "Unexpected error. Please contact support.");
+            response.put("exceptionMessage", e.getMessage());
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -78,6 +77,7 @@ public class BlackjackController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("errorMessage", "Unexpected error occurred. Please contact support.");
+            response.put("exceptionMessage", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

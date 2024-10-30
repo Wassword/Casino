@@ -20,16 +20,17 @@
     <a href="/register" class="btn btn-info">Register</a>
 </div>
 
-<!-- Main content container -->
+<!-- Main content container with a logo inside -->
 <div class="container">
-    <a href="/blackjack/leaderboard" class="btn btn-primary">Leaderboard!</a>
-
-    <h1 th:text="${welcomeMessage}">Welcome to the GoldenGrin Casino!</h1>
-    <p>Click the button below to start playing.</p>
-
-    <!-- Play Blackjack Button -->
-    <a href="/blackjack/bet" class="btn btn-primary">Play 21 or BUST!</a>
-
+    <img th:src="@{/images/grin.png}" alt="Golden Grin Casino Logo" class="logo-image">
+<h1 th:text="${welcomeMessage}">Welcome to the GoldenGrin Casino!</h1>
+<p>Click the button below to start playing.</p>
+<!-- Play Blackjack Button -->
+<a href="/blackjack/bet" class="btn btn-primary play-btn">Play 21 or BUST!</a>
 </div>
+<!-- Leaderboard Button -->
+<a href="/blackjack/leaderboard" class="btn btn-primary leaderboard-btn">Leaderboard!</a>
+
+
 </body>
 </html>

@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 @Controller
 public class HomeController {
 
-    private MusicPlayer musicPlayer = new MusicPlayer();
+    private final MusicPlayer musicPlayer = new MusicPlayer();
 
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -66,6 +66,7 @@ public class HomeController {
             return "error";
         } catch (Exception e) {
             logger.error("Unexpected error during stand action: {}", e.getMessage(), e);
+            model.addAttribute("exceptionMessage", e.getMessage());
             model.addAttribute("errorMessage", "Unexpected error. Please contact support.");
             model.addAttribute("exceptionMessage", e.getMessage());
             return "error";

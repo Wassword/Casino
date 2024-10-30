@@ -17,6 +17,7 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('status').innerText = data.status;
+                    document.getElementById('statusS').innerText = data.statusS;
 
                     // Update player's hand images
                     const playerHandContainer = document.getElementById('playerHandImages');
@@ -50,25 +51,24 @@
     <h1>21 or BUST!</h1>
 
     <!-- Display game status -->
-    <p id="status" th:text="${status}"></p>
+    <p id="status" th:text="${statusS}"></p>
 
     <!-- Dealer's Hand -->
     <h2>Dealer's Hand</h2>
-    <ul>
-        <li>
-            <img id="dealerFaceUpCard" th:src="${dealerFaceUpCard}" alt="Dealer's Face-Up Card" class="card-image">
-            <img th:src="@{/images/Playing-Cards/CardBackFaceBlueSmallPattern.png}" alt="Hidden Card" class="card-image">
-        </li>
-    </ul>
+    <div class="hand">
+        <img id="dealerFaceUpCard" th:src="${dealerFaceUpCard}" alt="Dealer's Face-Up Card" class="card-image">
+        <img th:src="@{/images/Playing-Cards/CardBackFaceBlueSmallPattern.png}" alt="Hidden Card" class="card-image">
+    </div>
 
     <!-- Player's Hand -->
     <h2>Your Hand</h2>
-    <div id="playerHandImages">
-        <!-- This container will be dynamically updated by JavaScript -->
+    <div id="playerHandImages" class="hand">
+        <!-- Player hand cards will be dynamically populated by JavaScript -->
         <div th:each="card : ${playerHandImages}">
             <img th:src="${card}" alt="Player Card" class="card-image">
         </div>
     </div>
+
 
     <!-- Result Message (only shown if the game is over) -->
     <p id="resultMessage" style="font-weight: bold;"></p>
@@ -105,6 +105,7 @@
                     cardElement.className = 'card-image';
                     playerHand.appendChild(cardElement);
                 });
+<<<<<<< Updated upstream
                 //
                 // const dealerHand = document.getElementById('dealerHand');
                 // dealerHand.innerHTML = '';
@@ -115,6 +116,12 @@
 
                 if (data.gameOver) {
                     window.location.href = 'blackjack/results';
+=======
+
+                if (data.gameOver) {
+                    window.location.href = 'blackjack/results';
+
+>>>>>>> Stashed changes
                 }
             })
             .catch(error => {
