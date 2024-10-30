@@ -15,6 +15,4 @@ public class AppProperties {
     private String defaultUsername;
     private String defaultPassword;
     private int defaultBalance;
-
-
 }

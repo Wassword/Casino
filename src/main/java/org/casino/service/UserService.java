@@ -1,5 +1,6 @@
 package org.casino.service;
 
+import org.casino.config.AppProperties;
 import org.casino.models.User;
 import org.casino.models.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,13 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    @Autowired
+    private AppProperties appProperties;
+    public void getVariables(){
+
+
+
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 

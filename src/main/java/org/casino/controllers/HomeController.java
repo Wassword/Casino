@@ -2,6 +2,7 @@ package org.casino.controllers;
 
 import org.casino.models.User;
 import org.casino.service.BlackjackService;
+import org.casino.service.MusicPlayer;
 import org.casino.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class HomeController {
+
+    private MusicPlayer musicPlayer = new MusicPlayer();
+
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final UserService userService;
@@ -36,6 +40,7 @@ public class HomeController {
      */
     @GetMapping("/")
     public String home(Model model) {
+        musicPlayer.playBackgroundMusic();
         String welcomeMessage = "Welcome to the Golden Grin Casino!";
         model.addAttribute("welcomeMessage", welcomeMessage);
         logger.info("Home page accessed with welcome message: {}", welcomeMessage);

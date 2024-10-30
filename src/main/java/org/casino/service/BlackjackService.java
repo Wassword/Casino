@@ -1,6 +1,7 @@
 package org.casino.service;
 
 import lombok.*;
+import org.casino.config.AppProperties;
 import org.casino.models.*;
 import org.casino.models.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class BlackjackService {
+
+    @Autowired
+    private AppProperties appProperties;
+    public void configureGame() {
+
+
+       }
+
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackService.class);
 
