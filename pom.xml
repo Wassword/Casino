@@ -133,7 +133,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
-<<<<<<< Updated upstream
         <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -145,8 +144,7 @@
             <artifactId>javafx-media</artifactId>
             <version>21.0.2</version>
         </dependency>
-=======
->>>>>>> Stashed changes
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
