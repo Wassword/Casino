@@ -11,8 +11,14 @@
 
 </head>
 <body>
-<!-- Include the navbar fragment -->
-<!--<div th:replace="navbar :: navbar"></div>-->
+<!-- Top-right container for login and register buttons -->
+<div class="top-right-buttons">
+    <!-- Login Button -->
+    <a href="/login" class="btn btn-success">Login</a>
+
+    <!-- Register Button -->
+    <a href="/register" class="btn btn-info">Register</a>
+</div>
 
 <!-- Main content container -->
 <div class="container">
@@ -25,6 +31,5 @@
     <a href="/blackjack/bet" class="btn btn-primary">Play 21 or BUST!</a>
 
 </div>
-<!--</div>-->
 </body>
 </html>
