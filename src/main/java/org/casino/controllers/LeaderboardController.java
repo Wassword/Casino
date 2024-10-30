@@ -26,17 +26,6 @@ public class LeaderboardController {
         this.userService = userService;
     }
 
-    // PUT endpoint to get users ordered by total wins
-    @PutMapping("/update-wins")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> updateLeaderboardByWins() {
-        List<User> users = userService.getUsersOrderedByWins();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("users", users);
-
-        return ResponseEntity.ok(response);
-    }
     /**
      * Displays the leaderboard page with the top players.
      *
@@ -57,4 +46,27 @@ public class LeaderboardController {
         }
 
     }
+    @PutMapping("/update-balance")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateLeaderboardByBalance() {
+        List<User> users = userService.getUsersOrderedByChips();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", users);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update-wins")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateLeaderboardByWins() {
+        List<User> users = userService.getUsersOrderedByWins();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", users);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

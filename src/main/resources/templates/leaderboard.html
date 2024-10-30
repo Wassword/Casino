@@ -12,8 +12,8 @@
 
     <!-- Toggle Buttons -->
     <div class="button-group">
-        <button id="winsLeaderboardButton" class="btn btn-primary">Sort by Wins</button>
-        <button id="balanceLeaderboardButton" class="btn btn-secondary">Sort by Balance</button>
+        <button id="balanceLeaderboardButton" class="btn btn-primary">Sort by Balance (Chips)</button>
+        <button id="winsLeaderboardButton" class="btn btn-secondary">Sort by Total Wins</button>
     </div>
 
     <!-- Leaderboard Table -->
@@ -23,7 +23,7 @@
             <th>Rank</th>
             <th>Username</th>
             <th>Total Wins</th>
-            <th>Balance</th>
+            <th>Chips</th>
         </tr>
         </thead>
         <tbody id="leaderboardBody">
@@ -33,10 +33,10 @@
 </div>
 
 <script>
-    // Function to refresh leaderboard by wins
-    async function refreshLeaderboardByWins() {
+    // Function to refresh leaderboard by balance (default view)
+    async function refreshLeaderboardByBalance() {
         try {
-            const response = await fetch('/leaderboard/update-wins', {
+            const response = await fetch('/blackjack/leaderboard/update-balance', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,18 +46,19 @@
             if (response.ok) {
                 const data = await response.json();
                 populateLeaderboard(data.users);
+                toggleActiveButton('balanceLeaderboardButton');
             } else {
-                console.error('Failed to update leaderboard by wins');
+                console.error('Failed to update leaderboard by balance');
             }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    // Function to refresh leaderboard by balance
-    async function refreshLeaderboardByBalance() {
+    // Function to refresh leaderboard by total wins
+    async function refreshLeaderboardByWins() {
         try {
-            const response = await fetch('/leaderboard/update-balance', {
+            const response = await fetch('/blackjack/leaderboard/update-wins', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,8 +68,9 @@
             if (response.ok) {
                 const data = await response.json();
                 populateLeaderboard(data.users);
+                toggleActiveButton('winsLeaderboardButton');
             } else {
-                console.error('Failed to update leaderboard by balance');
+                console.error('Failed to update leaderboard by wins');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -92,12 +94,20 @@
         });
     }
 
-    // Event listeners for the buttons
-    document.getElementById('winsLeaderboardButton').addEventListener('click', refreshLeaderboardByWins);
-    document.getElementById('balanceLeaderboardButton').addEventListener('click', refreshLeaderboardByBalance);
+    // Function to toggle the active button
+    function toggleActiveButton(activeButtonId) {
+        document.getElementById('balanceLeaderboardButton').classList.remove('btn-primary');
+        document.getElementById('winsLeaderboardButton').classList.remove('btn-primary');
 
-    // Initial load by wins
-    refreshLeaderboardByWins();
+        document.getElementById(activeButtonId).classList.add('btn-primary');
+    }
+
+    // Event listeners for the toggle buttons
+    document.getElementById('balanceLeaderboardButton').addEventListener('click', refreshLeaderboardByBalance);
+    document.getElementById('winsLeaderboardButton').addEventListener('click', refreshLeaderboardByWins);
+
+    // Load leaderboard by balance on page load
+    refreshLeaderboardByBalance();
 </script>
 </body>
 </html>
