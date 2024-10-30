@@ -4,21 +4,23 @@ import lombok.Getter;
 
 @Getter
 public enum Values {
-    TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6),
-    SEVEN(7), EIGHT(8), NINE(9), TEN(10),
-    JACK(10), QUEEN(10), KING(10), ACE(11);
+    TWO(2, "2"), THREE(3, "3"), FOUR(4, "4"), FIVE(5, "5"), SIX(6, "6"),
+    SEVEN(7, "7"), EIGHT(8, "8"), NINE(9, "9"), TEN(10, "10"),
+    JACK(10, "J"), QUEEN(10, "Q"), KING(10, "K"), ACE(11, "A");
 
     /**
      * -- GETTER --
-     *  Returns the card's default Blackjack value.
-     *  For ACE, the value defaults to 11 but can be adjusted in game logic.
-     *
+     * Returns the card's default Blackjack value.
+     * For ACE, the value defaults to 11 but can be adjusted in game logic.
      */
     private final int blackjackValue; // Blackjack point value for each card
 
-    // Constructor to initialize the card value
-    Values(int blackjackValue) {
+    private final String abbreviation; // Abbreviation for card value (e.g., "A" instead of "ACE")
+
+    // Constructor to initialize the card value and abbreviation
+    Values(int blackjackValue, String abbreviation) {
         this.blackjackValue = blackjackValue;
+        this.abbreviation = abbreviation;
     }
 
     /**
@@ -42,7 +44,7 @@ public enum Values {
     /**
      * Returns the display name of the card value (e.g., "Ace" instead of "ACE").
      *
-     * @return A string representing the display name of the value.
+     * @return string representing the display name of the value.
      */
     @Override
     public String toString() {

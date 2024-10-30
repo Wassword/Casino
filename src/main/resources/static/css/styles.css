@@ -174,8 +174,12 @@ input[type="submit"]:hover {
     margin-left: 10px;
 }
 .card-image {
-    width: 100px;
+    width: 50px;
     height: auto;
     margin: 10px;
+}
+.table {
+    width: 80%;
+    margin: 0 auto;
 }
 

@@ -20,7 +20,7 @@
   <p>Current Balance: $<span th:text="${user.balance}">100</span></p>
 
   <!-- Bet Amount Form -->
-  <form method="post" action="/blackjack/place-bet">
+  <form method="post" action="/blackjack">
     <label for="betAmount">Bet Amount:</label>
     <input type="number" id="betAmount" name="betAmount" min="5" step="5" placeholder="Enter your bet" required>
 

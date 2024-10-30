@@ -4,49 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GGC 21 or Bust!</title>
-
     <link rel="icon" type="image/png" th:href="@{/images/grin.png}">
-
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script>
+        function hit() {
+            fetch('/blackjack/hit', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = data.status;
+
+                    // Update player's hand images
+                    const playerHandContainer = document.getElementById('playerHandImages');
+                    playerHandContainer.innerHTML = '';
+                    data.playerHandImages.forEach(imagePath => {
+                        const img = document.createElement('img');
+                        img.src = imagePath;
+                        img.alt = 'Player Card';
+                        img.classList.add('card-image');
+                        playerHandContainer.appendChild(img);
+                    });
+
+                    // Update dealer's face-up card image
+                    const dealerFaceUpCard = document.getElementById('dealerFaceUpCard');
+                    dealerFaceUpCard.src = data.dealerFaceUpCard;
+
+                    // If game is over, display final message and disable buttons
+                    if (data.gameOver) {
+                        window.location.href = 'blackjack/results';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Unexpected error occurred. Please try again.');
+                });
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <h1>21 or BUST!</h1>
 
     <!-- Display game status -->
-    <p th:text="${status}"></p>
+    <p id="status" th:text="${status}"></p>
 
     <!-- Dealer's Hand -->
     <h2>Dealer's Hand</h2>
     <ul>
-        <li th:if="${dealerHand == null}">
-            <!-- Display the dealer's face-up and face-down cards if the game is ongoing -->
-            <div th:each="card : ${dealerHand}">
-                <img th:src="${card}" alt="Dealer Card" class="card-image">
-            </div>
-            <span th:text="Hidden">Hidden</span>
-        </li>
-        <li th:if="${dealerHand != null}" th:each="card : ${dealerHand}" th:text="${card}">
-            <!-- Reveals the dealer's full hand when the game is over -->
+        <li>
+            <img id="dealerFaceUpCard" th:src="${dealerFaceUpCard}" alt="Dealer's Face-Up Card" class="card-image">
+            <img th:src="@{/images/Playing-Cards/CardBackFaceBlueSmallPattern.png}" alt="Hidden Card" class="card-image">
         </li>
     </ul>
 
     <!-- Player's Hand -->
     <h2>Your Hand</h2>
-    <ul>
+    <div id="playerHandImages">
+        <!-- This container will be dynamically updated by JavaScript -->
         <div th:each="card : ${playerHandImages}">
             <img th:src="${card}" alt="Player Card" class="card-image">
         </div>
+    </div>
 
-    </ul>
+    <!-- Result Message (only shown if the game is over) -->
+    <p id="resultMessage" style="font-weight: bold;"></p>
 
     <!-- Player Actions -->
-        <form method="post" action="/blackjack/hit">
-            <button type="submit" class="btn btn-primary">Hit</button>
+    <div class="action-buttons">
+        <button id="hitButton" type="button" class="btn btn-primary" onclick="hit()">Hit</button>
+        <form method="post" action="/blackjack/stand" style="display: inline;">
+            <button id="standButton" type="submit" class="btn btn-warning">Stand</button>
         </form>
-        <form method="post" action="/blackjack/stand">
-            <button type="submit" class="btn btn-warning">Stand</button>
-        </form>
+    </div>
 </div>
 </body>
 </html>
