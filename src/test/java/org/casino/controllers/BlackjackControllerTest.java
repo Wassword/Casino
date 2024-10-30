@@ -1,6 +1,5 @@
 package org.casino.controllers;
 
-import org.casino.models.User;
 import org.casino.service.BlackjackService;
 import org.casino.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,18 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
-<<<<<<< Updated upstream
 import java.util.Collections;
-=======
-import java.util.NoSuchElementException;
->>>>>>> Stashed changes
-import java.util.Optional;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,9 +27,6 @@ class BlackjackControllerTest {
     private BlackjackService blackjackService;
 
     @Mock
-    private Model model;
-
-    @Mock
     private SecurityContext securityContext;
 
     @Mock
@@ -44,8 +35,6 @@ class BlackjackControllerTest {
     @InjectMocks
     private BlackjackController blackjackController;
 
-    private User user;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -53,79 +42,68 @@ class BlackjackControllerTest {
         // Mock SecurityContext and Authentication
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-
-        // Mock Authentication and UserDetails
-        UserDetails userDetails = mock(UserDetails.class);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-        when(userDetails.getUsername()).thenReturn("testUser");
-
-        user = new User();
-        user.setUsername("testUser");
-    }
-
-    @Test
-    void testGame() {
-        String viewName = blackjackController.game();
-        assertEquals("game", viewName);
     }
 
     @Test
     void testHitSuccess() {
         when(blackjackService.playerHit()).thenReturn("Hit success");
-
-<<<<<<< Updated upstream
-        // Return a String representing the player's hand
         when(blackjackService.getPlayerHand()).thenReturn(Collections.singletonList("Ace, King"));
-=======
-        String viewName = blackjackController.hit(model);
->>>>>>> Stashed changes
+        when(blackjackService.getDealerFaceUpCard()).thenReturn("King of Hearts");
+        when(blackjackService.isGameOver()).thenReturn(false);
 
-        assertEquals("game", viewName);
-        verify(model).addAttribute("status", "Hit success");
+        ResponseEntity<Map<String, Object>> response = blackjackController.hit();
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("Hit success", response.getBody().get("status"));
+        assertEquals(Collections.singletonList("Ace, King"), response.getBody().get("playerHandImages"));
+        assertEquals("King of Hearts", response.getBody().get("dealerFaceUpCard"));
+        assertFalse((Boolean) response.getBody().get("gameOver"));
     }
 
     @Test
     void testHitPlayerBusts() {
         when(blackjackService.playerHit()).thenReturn("Player busted");
         when(blackjackService.playerStand()).thenReturn("Player stood");
+        when(blackjackService.getPlayerHand()).thenReturn(Collections.singletonList("Ace, King"));
+        when(blackjackService.getDealerFaceUpCard()).thenReturn("King of Hearts");
+        when(blackjackService.getDealerHand()).thenReturn(Collections.singletonList("Dealer's hand"));
+        when(blackjackService.isGameOver()).thenReturn(false); // First call to check game status
 
-        String viewName = blackjackController.hit(model);
+        ResponseEntity<Map<String, Object>> response = blackjackController.hit();
 
-        assertEquals("result", viewName);
-        verify(model).addAttribute("resultMessage", "Player stood");
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("Player busted", response.getBody().get("status"));
+        assertEquals("Player stood", response.getBody().get("resultMessage"));
+        assertEquals(Collections.singletonList("Dealer's hand"), response.getBody().get("dealerHandImages"));
+        assertTrue((Boolean) response.getBody().get("gameOver"));
     }
 
     @Test
-    void testStandSuccess() {
-        when(blackjackService.playerStand()).thenReturn("Player stood");
+    void testHitGameAlreadyOver() {
+        when(blackjackService.isGameOver()).thenReturn(true);
+        when(blackjackService.getPlayerHand()).thenReturn(Collections.singletonList("Ace, King"));
+        when(blackjackService.getDealerFaceUpCard()).thenReturn("King of Hearts");
 
-        String viewName = blackjackController.stand(model);
+        ResponseEntity<Map<String, Object>> response = blackjackController.hit();
 
-        assertEquals("result", viewName);
-        verify(model).addAttribute("resultMessage", "Player stood");
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("Game is already over.", response.getBody().get("status"));
+        assertEquals(Collections.singletonList("Ace, King"), response.getBody().get("playerHandImages"));
+        assertEquals("King of Hearts", response.getBody().get("dealerFaceUpCard"));
+        assertTrue((Boolean) response.getBody().get("gameOver"));
     }
 
     @Test
-    void testGetGameStatusSuccess() {
-        when(blackjackService.getPlayerHand()).thenReturn(mock(java.util.List.class));
-        when(blackjackService.getDealerFaceUpCard()).thenReturn("Ace of Spades");
+    void testHitUnexpectedError() {
+        when(blackjackService.playerHit()).thenThrow(new RuntimeException("Unexpected error"));
 
-        String viewName = blackjackController.getGameStatus(model);
+        ResponseEntity<Map<String, Object>> response = blackjackController.hit();
 
-        assertEquals("game", viewName);
-        verify(model).addAttribute("playerHand", blackjackService.getPlayerHand());
-        verify(model).addAttribute("dealerCard", "Ace of Spades");
-    }
-
-
-    @Test
-    void testGetLoggedInUsername() {
-        UserDetails userDetails = mock(UserDetails.class);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-        when(userDetails.getUsername()).thenReturn("testUser");
-
-        String username = blackjackController.getLoggedInUsername();
-
-        assertEquals("testUser", username);
+        assertEquals(500, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("Unexpected error. Please contact support.", response.getBody().get("errorMessage"));
     }
 }

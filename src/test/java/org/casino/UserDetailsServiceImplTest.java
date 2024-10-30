@@ -27,7 +27,7 @@ class UserDetailsServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         user = new User();
         user.setUsername("testUser");
         user.setPassword("password");
