@@ -34,8 +34,8 @@ public class UserController {
     }
 
     // Mapping for the logout page (logout.html)
-    @GetMapping("/logout")
-    public String logout() {
-        return "logout";
-    }
+//    @GetMapping("/logout")
+//    public String logout() {
+//        return "logout";
+//    }
 }

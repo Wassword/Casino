@@ -67,18 +67,17 @@
         </div>
     </div>
 
-
     <!-- Result Message (only shown if the game is over) -->
     <p id="resultMessage" style="font-weight: bold;"></p>
 
     <!-- Player Actions -->
     <div class="action-buttons">
-        <button id="hitButton" type="button" class="btn btn-primary" onclick="hit()">Hit</button>
+        <button id="hitButton" type="button" class="btn btn-primary">Hit</button>
         <form method="post" action="/blackjack/stand" style="display: inline;">
-            <button id="standButton" type="submit" class="btn btn-warning">Stand</button>
+            <button id="standButton" type="submit" class="btn btn-primary">Stand</button>
         </form>
         <form th:action="@{/blackjack/double-down}" method="post" style="display: inline;">
-            <button type="submit" class="btn btn-danger">Double Down</button>
+            <button type="submit" class="btn btn-primary">Double Down</button>
         </form>
     </div>
 </div>

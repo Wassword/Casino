@@ -54,10 +54,10 @@ class UserControllerTest {
         assertEquals("login", viewName);
     }
 
-    @Test
-    void testLogout() {
-        String viewName = userController.logout();
-
-        assertEquals("logout", viewName);
-    }
+//    @Test
+//    void testLogout() {
+//        String viewName = userController.logout();
+//
+//        assertEquals("logout", viewName);
+//    }
 }

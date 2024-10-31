@@ -6,23 +6,83 @@
   <title>GG Casino</title>
 
   <link rel="icon" type="image/png" th:href="@{/images/grin.png}">
-
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <style>
+    /* Larger button for "Place Bet" */
+    .btn-primary {
+      font-size: 24px;  /* Increase font size */
+      padding: 15px 30px;  /* Increase padding */
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    /* Styling for the "Back to home" link */
+    .btn-secondary {
+      font-size: 20px; /* Increase font size */
+      padding: 10px 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      text-decoration: underline; /* Add underline on hover */
+    }
+
+    /* Optional styling for the container */
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    p {
+      font-size: 18px;
+      color: white;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    /* Add some margin above the back link */
+    .mt-4 {
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
   <h1>Place Your Bet</h1>
 
   <!-- Instructions -->
-  <p>Please enter the amount you would like to bet. Bet must be a multiple of 5 and within your current balance.</p>
+  <p>Please enter the amount you would like to bet</p>
+  <p>Bet must be a multiple of 5 and within your current balance.</p>
 
   <!-- Display current balance (optional) -->
   <p>Current Balance: $<span th:text="${user.balance}">100</span></p>
 
   <!-- Bet Amount Form -->
   <form method="post" action="/blackjack">
-    <label for="betAmount">Bet Amount:</label>
-    <input type="number" id="betAmount" name="betAmount" min="5" step="5" placeholder="Enter your bet" required>
+    <label for="betAmount">Bet Amount:</label><br>
+    <input type="number" id="betAmount" name="betAmount" min="5" step="5" placeholder="Enter your bet" required><br><br>
 
     <!-- Error Message (displayed if an invalid bet is submitted) -->
     <p th:if="${status != null}" th:text="${status}" class="error-message"></p>
@@ -31,7 +91,7 @@
     <button type="submit" class="btn btn-primary">Place Bet</button>
   </form>
 
-  <!-- Back to Game Button (optional) -->
+  <!-- Back to Home Button (optional) -->
   <div class="mt-4">
     <a href="/" class="btn btn-secondary">Back to home</a>
   </div>

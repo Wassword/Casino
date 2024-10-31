@@ -5,14 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        /* Custom styles for leaderboard */
+        table {
+            width: 100%;
+            font-size: 20px;  /* Increase the font size */
+            color: white;  /* Set the color to white */
+        }
+
+        thead th {
+            background-color: #007bff; /* Blue header background */
+            color: white; /* White text in header */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #333; /* Darker background for even rows */
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #555; /* Lighter background for odd rows */
+        }
+
+        /* Style buttons */
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        /* Top-right buttons (Home/Logout) */
+        .top-right-buttons {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .top-right-buttons .btn {
+            font-size: 14px;
+            background-color: gold;
+            color: black;
+        }
+
+        .top-right-buttons .btn:hover {
+            background-color: #cda00d;
+        }
+
+        /* Center the table container */
+        .container {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+    </style>
 </head>
 <body>
 <div class="top-right-buttons">
-
     <a href="/" class="btn btn-success">home</a>
-
     <a href="/logout" class="btn btn-info">logout</a>
 </div>
+
 <div class="container">
     <h1>Leaderboard</h1>
 
