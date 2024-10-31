@@ -5,6 +5,7 @@ import org.casino.service.BlackjackService;
 import org.casino.service.MusicPlayer;
 import org.casino.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,7 +103,7 @@ public class HomeController {
     }
     @GetMapping("/blackjack")
     public String showGamePage(Model model) {
-        String gameStatus = blackjackService.startGame();
+        String gameStatus = blackjackService.getPlayerHandS();
 
         model.addAttribute("status", gameStatus);
         model.addAttribute("playerHandImages", blackjackService.getPlayerHand());
@@ -178,6 +179,35 @@ public class HomeController {
 
             return "error";
         }
+    }
+    @PostMapping("/blackjack/double-down")
+    public String doubleDown(Model model) {
+        try {
+            String doubleDownResult = blackjackService.playerDoubleDown();
+
+            // Add game result details to the model for display on the results page
+            model.addAttribute("resultMessage", doubleDownResult);
+            model.addAttribute("playerHand", blackjackService.getPlayerHand());
+            model.addAttribute("dealerHand", blackjackService.getDealerHand());
+            model.addAttribute("playerTotal", blackjackService.calculateHandValue());
+
+            // Redirect to the results page after doubling down
+            return "result";
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", "You cannot double down. Check your balance or game state.");
+            return "error";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred. Please contact support.");
+            return "error";
+        }
+    }
+
+
+    @GetMapping("/logout")
+    public String logout(){
+        // Logout the user and clear the session
+        SecurityContextHolder.clearContext();
+        return "redirect:/login";
     }
 
 

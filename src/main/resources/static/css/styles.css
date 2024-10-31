@@ -339,6 +339,48 @@ input[type="submit"]:hover {
     margin-top: 20px;
 }
 
+/* Table container styling */
+.table-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    overflow-x: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
 
+/* Table styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
 
+.styled-table thead tr {
+    background-color: #3498db;
+    color: #ffffff;
+    text-align: left;
+}
 
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.styled-table tbody tr {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #e9e9e9;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #d1e7fd;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #3498db;
+}

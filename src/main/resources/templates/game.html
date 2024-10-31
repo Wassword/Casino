@@ -17,8 +17,6 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('status').innerText = data.status;
-                    document.getElementById('statusS').innerText = data.statusS;
-
                     // Update player's hand images
                     const playerHandContainer = document.getElementById('playerHandImages');
                     playerHandContainer.innerHTML = '';
@@ -51,7 +49,7 @@
     <h1>21 or BUST!</h1>
 
     <!-- Display game status -->
-    <p id="status" th:text="${statusS}"></p>
+    <p id="status" th:text="${status}"></p>
 
     <!-- Dealer's Hand -->
     <h2>Dealer's Hand</h2>
@@ -79,56 +77,10 @@
         <form method="post" action="/blackjack/stand" style="display: inline;">
             <button id="standButton" type="submit" class="btn btn-warning">Stand</button>
         </form>
-        <button id="doubleDownButton" class="btn btn-success" onclick="doubleDown()">Double Down</button>
+        <form th:action="@{/blackjack/double-down}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Double Down</button>
+        </form>
     </div>
 </div>
-
-<script>
-    // JavaScript function for double down action
-    function doubleDown() {
-        fetch('/blackjack/double-down', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('statusMessage').innerText = data.status;
-
-                // Update player and dealer hands in the UI
-                const playerHand = document.getElementById('playerHand');
-                playerHand.innerHTML = '';
-                data.playerHandImages.forEach(card => {
-                    const cardElement = document.createElement('img');
-                    cardElement.src = card;
-                    cardElement.className = 'card-image';
-                    playerHand.appendChild(cardElement);
-                });
-<<<<<<< Updated upstream
-                //
-                // const dealerHand = document.getElementById('dealerHand');
-                // dealerHand.innerHTML = '';
-                // const dealerCardElement = document.createElement('img');
-                // dealerCardElement.src = data.dealerFaceUpCard;
-                // dealerCardElement.className = 'card-image';
-                // dealerHand.appendChild(dealerCardElement);
-
-                if (data.gameOver) {
-                    window.location.href = 'blackjack/results';
-=======
-
-                if (data.gameOver) {
-                    window.location.href = 'blackjack/results';
-
->>>>>>> Stashed changes
-                }
-            })
-            .catch(error => {
-                console.error('Error with double down:', error);
-                document.getElementById('statusMessage').innerText = 'An error occurred. Please try again.';
-            });
-    }
-</script>
 </body>
 </html>

@@ -258,7 +258,6 @@ public class BlackjackService {
         user.addCardToHand(deck.dealCard());
 
         int points = user.calculateHandValue();
-        String statusMessage = String.format("You doubled down. Your hand: %s (Total Points: %d)", getPlayerHandS(), points);
 
         // If the player busts after doubling down
         if (points > 21) {
@@ -266,9 +265,9 @@ public class BlackjackService {
             return handleBust();
         }
 
-        // Otherwise, end the player’s turn and move to dealer's turn
-        gameOver = false;
-        return statusMessage + "\n" + playerStand();
+        playDealerTurn();
+        gameOver = true;
+        return handleGameOutcome();
     }
     private boolean canDoubleDown() {
         return user.getBalance() >= user.getCurrentBet();
